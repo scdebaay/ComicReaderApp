@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:InfiniteListView"
+    x:Class="ComicReaderApp.ComicListViewPage"
+    Title="Comic Cloud App"
+    xmlns:scroll="clr-namespace:Xamarin.Forms.Extended;assembly=Xamarin.Forms.Extended.InfiniteScrolling"
+    xmlns:behaviors="clr-namespace:ComicReaderApp.Behaviors"
+    xmlns:resources="clr-namespace:ComicReaderApp.Converters">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <resources:ItemTappedConverter x:Key="TappedItemArgs" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ListView
+        CachingStrategy="RecycleElement"
+        ItemsSource="{Binding Items}">
+        <ListView.Behaviors>
+            <scroll:InfiniteScrollBehavior />
+            <behaviors:ListViewItemTappedBehavior Command="{Binding ItemTappedCommand}"
+                                                  Converter="{StaticResource TappedItemArgs}"/>
+        </ListView.Behaviors>
+
+        <ListView.Header>
+            <Label Text="{Binding AlertMessage}"/>
+        </ListView.Header>
+        
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label Text="{Binding Title}" />
+                        <Image Source="{Binding ThumbUrl}" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+
+        <!-- the "loading..." view, with visibility bound to IsWorking -->
+        <ListView.Footer>
+            <Grid Padding="4" IsVisible="{Binding IsLoadingMore}">
+                <!-- set the footer to have a zero height when invisible -->
+                <Grid.Triggers>
+                    <Trigger TargetType="Grid" Property="IsVisible" Value="False">
+                        <Setter Property="HeightRequest" Value="0" />
+                    </Trigger>
+                </Grid.Triggers>
+                <!-- the loading content -->
+                <ActivityIndicator
+                    IsRunning="true"
+                    Color="Black"
+                    WidthRequest="20"
+                    HeightRequest="20"/>
+            </Grid>
+        </ListView.Footer>
+    </ListView>
+</ContentPage>
