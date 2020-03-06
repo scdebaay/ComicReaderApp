@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using ComicReaderApp.Models;
 
 namespace ComicReaderApp
 {
 	public partial class App : Application
 	{
-		public App ()
+        public App ()
 		{
-			InitializeComponent();
-
+			InitializeComponent();            
 			MainPage = new NavigationPage(new ComicListViewPage());
         }
 

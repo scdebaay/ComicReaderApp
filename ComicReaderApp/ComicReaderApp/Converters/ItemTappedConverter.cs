@@ -12,7 +12,7 @@ namespace ComicReaderApp.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var eventArgs = value as ItemTappedEventArgs;
-            return eventArgs.Item as ComicListItem;
+            return eventArgs.Item as ComicListItemModel;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -1,24 +1,19 @@
-﻿using ComicReaderApp.Models;
-using ComicReaderApp.Behaviors;
-using System;
-using System.Collections.Generic;
+﻿using ComicReaderApp.Data;
+using ComicReaderApp.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms.Extended;
 using System.Windows.Input;
-using System.Diagnostics;
 using Xamarin.Forms;
+using Xamarin.Forms.Extended;
 
 namespace ComicReaderApp.ViewModels
 {
     class ComicListViewModel : INotifyPropertyChanged
     {
-        public InfiniteScrollCollection<ComicListItem> Items { get; }
-        
-        bool _isLoadingMore;
-        bool IsLoadingMore
+        public InfiniteScrollCollection<ComicListItemModel> Items { get; }
+
+        private bool _isLoadingMore;
+        public bool IsLoadingMore
         {
             get
             {
@@ -31,45 +26,37 @@ namespace ComicReaderApp.ViewModels
             }
         }
 
+        readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
+
+        public int TotalComics { get; private set; }
+
         public ComicListViewModel()
         {
-            Items = new InfiniteScrollCollection<ComicListItem>
+            Items = new InfiniteScrollCollection<ComicListItemModel>
             {
                 OnLoadMore = async () =>
                 {
                     IsLoadingMore = true;
-
-                    var items = GetItems(false);
-                    //Call your Web API next items page.
-                    await Task.Delay(1200);
+                    var page = (Items.Count / AppSettingsManager.PageLimit) + 1;
+                    var apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
+                    TotalComics = apiCallResult.AvailableFiles;
+                    InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
+                    foreach (var _comic in apiCallResult.Files)
+                    {
+                        items.Add(_comic);
+                    }
 
                     IsLoadingMore = false;
                     return items;
+                },
+                OnCanLoadMore = () =>
+                {
+                    return Items.Count < TotalComics;
                 }
             };
             Items.LoadMoreAsync();
-            //ItemTappedCommand = new Command();
         }
 
-        InfiniteScrollCollection<ComicListItem> GetItems(bool clearList)
-        {
-            InfiniteScrollCollection<ComicListItem> items;
-            if (clearList || Items == null)
-            {
-                items = new InfiniteScrollCollection<ComicListItem>();
-            }
-            else
-            {
-                items = new InfiniteScrollCollection<ComicListItem>(Items);
-            }
-
-            for (int i = 0; i < 20; i++)
-            {
-                items.Add(new ComicListItem { ThumbUrl = Data.ComicList.Titles[i].ThumbUrl, Title = Data.ComicList.Titles[i].Title });
-            }
-
-            return items;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -96,7 +83,7 @@ namespace ComicReaderApp.ViewModels
                 return new Command((TappedltemArgs) =>
                 {
                     string ItemTitle;
-                    ComicListItem comic = TappedltemArgs as ComicListItem;
+                    ComicListItemModel comic = TappedltemArgs as ComicListItemModel;
                     ItemTitle = comic.Title;
                     AlertMessage = ItemTitle;
                 });

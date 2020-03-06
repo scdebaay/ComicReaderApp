@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ComicReaderApp.Models
 {
-    class Comic
+    class ComicModel
     {
-        public Comic()
+        public ComicModel()
         {
             //If current value for size property is higher than the defaultSize from the config, size property is set to the value input.
             if (Defaultsize < Size)
@@ -18,7 +18,7 @@ namespace ComicReaderApp.Models
                 this.Size = Defaultsize;
             }
             //Initialize integer to parse the defaultSize into.
-            this.Defaultsize = Settings.DefaultComicSize;
+            this.Defaultsize = 700 ;
             //Initialize page property to 0. Can be set externally.
             this.Page = 0;
         }
