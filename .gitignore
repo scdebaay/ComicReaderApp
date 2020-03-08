@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/ComicReaderApp/ComicReaderApp/Data/.gitignore
+*.json
+*.xml
+/ComicReaderApp/ComicReaderApp/Data/APICallExamples.txt
