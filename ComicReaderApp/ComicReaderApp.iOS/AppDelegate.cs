@@ -25,7 +25,10 @@ namespace ComicReaderApp.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
-            return base.FinishedLaunching(app, options);
-        }
+            //PhotoBrowser.Forms iOS implementation
+            Stormlion.PhotoBrowser.iOS.Platform.Init();
+
+            return base.FinishedLaunching(app, options);            
+        }        
     }
 }

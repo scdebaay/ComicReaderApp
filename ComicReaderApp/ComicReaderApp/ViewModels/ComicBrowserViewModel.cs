@@ -1,5 +1,6 @@
 ﻿using ComicReaderApp.Data;
 using ComicReaderApp.Models;
+using Stormlion.PhotoBrowser;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,6 @@ namespace ComicReaderApp.ViewModels
     public class ComicBrowserViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -40,7 +40,7 @@ namespace ComicReaderApp.ViewModels
                 _comicTitle = value;
                 OnPropertyChanged(nameof(ComicTitle));
             }
-        }
+        }        
 
         public ComicBrowserViewModel(ComicListItemModel comic)
         {

@@ -21,6 +21,9 @@ namespace ComicReaderApp.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+
+            //Photobrowser.Forms Android implementation
+            Stormlion.PhotoBrowser.Droid.Platform.Init(this);
         }
     }
 }

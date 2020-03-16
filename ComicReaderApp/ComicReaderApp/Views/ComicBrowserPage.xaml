@@ -3,11 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ComicReaderApp.Views.ComicBrowserPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Image Source="{Binding ThumbUrl}" VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Label Text="{Binding ComicTitle}" VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <StackLayout/>
     </ContentPage.Content>
 </ContentPage>

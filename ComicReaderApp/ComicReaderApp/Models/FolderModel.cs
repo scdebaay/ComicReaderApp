@@ -13,7 +13,7 @@ namespace ComicReaderApp.Models
             AvailableFiles = 1;
             TotalPages = 1;
             CurrentPage = 1;
-            ComicListItemModel emtpyComic = new ComicListItemModel("", "File not found");
+            ComicListItemModel emtpyComic = new ComicListItemModel("", "File not found", 0);
             files.Add(emtpyComic);
         }
 
@@ -33,7 +33,7 @@ namespace ComicReaderApp.Models
             {
                 foreach (var comicFile in fileArray.Children())
                 {
-                    ComicListItemModel comic = new ComicListItemModel((string)comicFile["@path"], ((string)comicFile["@name"]).Substring(0, ((string)comicFile["@name"]).Length - 4));
+                    ComicListItemModel comic = new ComicListItemModel((string)comicFile["@path"], ((string)comicFile["@name"]).Substring(0, ((string)comicFile["@name"]).Length - 4), comicFile["@totalpages"].ToObject<int>());
                     files.Add(comic);
                 }
             }

@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
-    <AssemblyVersion>2020.1.0.1</AssemblyVersion>
-    <FileVersion>2020.1.0.1</FileVersion>
+    <AssemblyVersion>2020.3.0.2</AssemblyVersion>
+    <FileVersion>2020.3.0.2</FileVersion>
     <Description>App to read Comic in cbr/cbz format online from Comic Cloud service.</Description>
     <Copyright>Solino de Baay (2016)</Copyright>
     <PackageProjectUrl>https://github.com/scdebaay/ComicReaderApp</PackageProjectUrl>
@@ -25,9 +25,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.Build" Version="1.0.21" />
+    <PackageReference Include="NewPhotoBrowser.Forms" Version="0.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
     <PackageReference Include="Xamarin.Forms.Extended.InfiniteScrolling" Version="1.0.0-preview2" />
   </ItemGroup>
