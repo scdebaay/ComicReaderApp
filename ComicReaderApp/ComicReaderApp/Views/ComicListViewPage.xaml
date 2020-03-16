@@ -8,6 +8,9 @@
     xmlns:scroll="clr-namespace:Xamarin.Forms.Extended;assembly=Xamarin.Forms.Extended.InfiniteScrolling"
     xmlns:behaviors="clr-namespace:ComicReaderApp.Behaviors"
     xmlns:resources="clr-namespace:ComicReaderApp.Converters">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{Binding SettingIcon}" Clicked="Settings_ClickedAsync"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
             <resources:ItemTappedConverter x:Key="TappedItemArgs" />
@@ -22,16 +25,12 @@
                                                   Converter="{StaticResource TappedItemArgs}"/>
         </ListView.Behaviors>
 
-        <ListView.Header>
-            <Label Text="{Binding AlertMessage}"/>
-        </ListView.Header>
-        
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label Text="{Binding Title}" />
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Horizontal">
                         <Image Source="{Binding ThumbUrl}" />
+                        <Label Text="{Binding Title}" />
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>
@@ -49,7 +48,7 @@
                 <!-- the loading content -->
                 <ActivityIndicator
                     IsRunning="true"
-                    Color="Black"
+                    Color="Purple"
                     WidthRequest="20"
                     HeightRequest="20"/>
             </Grid>

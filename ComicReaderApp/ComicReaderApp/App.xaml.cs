@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ComicReaderApp.Data;
 using Xamarin.Forms;
-using ComicReaderApp.Models;
 
 namespace ComicReaderApp
 {
-	public partial class App : Application
+    public partial class App : Application
 	{
         public App ()
 		{
-			InitializeComponent();            
-			MainPage = new NavigationPage(new ComicListViewPage());
+			InitializeComponent();
+            UserSettings.ClearEverything();
+            MainPage = new NavigationPage(new ComicListViewPage());
         }
 
 		protected override void OnStart ()

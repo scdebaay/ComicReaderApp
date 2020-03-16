@@ -8,19 +8,19 @@ using System.Text;
 
 namespace ComicReaderApp.Data
 {
-    public class AppSettingsManager
+    public class DefaultAppSettingsManager
     {
-        private static AppSettingsManager _instance;
+        private static DefaultAppSettingsManager _instance;
         readonly JObject _settings;
 
         private const string Namespace = "ComicReaderApp.Data";
         private const string FileName = "Settings.json";
 
-        private AppSettingsManager()
+        private DefaultAppSettingsManager()
         {
             try
             {
-                var assembly = IntrospectionExtensions.GetTypeInfo(typeof(AppSettingsManager)).Assembly;
+                var assembly = IntrospectionExtensions.GetTypeInfo(typeof(DefaultAppSettingsManager)).Assembly;
                 var stream = assembly.GetManifestResourceStream($"{Namespace}.{FileName}");
                 using (var reader = new StreamReader(stream))
                 {
@@ -34,13 +34,13 @@ namespace ComicReaderApp.Data
             }
         }
 
-        public static AppSettingsManager Settings
+        public static DefaultAppSettingsManager Settings
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new AppSettingsManager();
+                    _instance = new DefaultAppSettingsManager();
                 }
 
                 return _instance;

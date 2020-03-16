@@ -1,5 +1,6 @@
 ﻿using ComicReaderApp.Data;
 using ComicReaderApp.Models;
+using ComicReaderApp.Views;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -28,16 +29,21 @@ namespace ComicReaderApp.ViewModels
 
         readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
 
+        public ImageSource SettingIcon = ImageSource.FromResource("ComicReaderApp.Resources.Setings.png");
+
         public int TotalComics { get; private set; }
 
-        public ComicListViewModel()
+        readonly INavigation _navigation;
+
+        public ComicListViewModel(INavigation navigation)
         {
+            _navigation = navigation;
             Items = new InfiniteScrollCollection<ComicListItemModel>
             {
                 OnLoadMore = async () =>
                 {
                     IsLoadingMore = true;
-                    var page = (Items.Count / AppSettingsManager.PageLimit) + 1;
+                    var page = (Items.Count / UserSettings.PageLimit) + 1;
                     var apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
                     TotalComics = apiCallResult.AvailableFiles;
                     InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
@@ -57,23 +63,11 @@ namespace ComicReaderApp.ViewModels
             Items.LoadMoreAsync();
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private string alertMessage;
-
-        public string AlertMessage
-        {
-            get { return alertMessage; }
-            set { alertMessage = value;
-                OnPropertyChanged();
-            }
-
         }
 
         public ICommand ItemTappedCommand
@@ -82,10 +76,8 @@ namespace ComicReaderApp.ViewModels
             {
                 return new Command((TappedltemArgs) =>
                 {
-                    string ItemTitle;
                     ComicListItemModel comic = TappedltemArgs as ComicListItemModel;
-                    ItemTitle = comic.Title;
-                    AlertMessage = ItemTitle;
+                    _navigation.PushAsync(new ComicBrowserPage(comic));
                 });
             }
         }

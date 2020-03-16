@@ -14,18 +14,23 @@ namespace ComicReaderApp.Data
         {
             HttpClient client = new HttpClient
             {
-                BaseAddress = new Uri(AppSettingsManager.Settings["apiLocation"])
+                BaseAddress = new Uri(UserSettings.ApiLocation)
             };
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var request = $"{client.BaseAddress}?folder=comic&pagelimit={ AppSettingsManager.PageLimit}&page={page}&json=true";
+            var request = $"{client.BaseAddress}?folder=comic&pagelimit={UserSettings.PageLimit}&page={page}&json=true";
             HttpResponseMessage response = await client.GetAsync(request);
             response.EnsureSuccessStatusCode();
             JObject jObject = JsonConvert.DeserializeObject<JObject>(response.Content.ReadAsStringAsync().Result);
-
-            FolderModel returnList = new FolderModel(jObject);
-
-            return returnList;
+            if (jObject != null)
+            {
+                FolderModel returnList = new FolderModel(jObject);
+                return returnList;
+            }
+            else
+            {
+                FolderModel emptyResponseList = new FolderModel();
+                return emptyResponseList;
+            }
         }
-
     }
 }
