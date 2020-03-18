@@ -9,9 +9,10 @@ namespace ComicReaderApp
     {
 
         public ComicListViewPage()
-        {
-            InitializeComponent();
+        {            
+            InitializeComponent();            
             BindingContext = new ComicListViewModel(Navigation);
+            
         }
 
         private ComicListViewModel ComicListViewModel

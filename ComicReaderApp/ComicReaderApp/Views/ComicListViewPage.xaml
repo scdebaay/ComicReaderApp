@@ -8,7 +8,8 @@
     xmlns:scroll="clr-namespace:Xamarin.Forms.Extended;assembly=Xamarin.Forms.Extended.InfiniteScrolling"
     xmlns:behaviors="clr-namespace:ComicReaderApp.Behaviors"
     xmlns:resources="clr-namespace:ComicReaderApp.Converters"
-    xmlns:extensions="clr-namespace:ComicReaderApp.Extensions">
+    xmlns:extensions="clr-namespace:ComicReaderApp.Extensions"
+    BackgroundColor="{StaticResource MainBackGroundColour}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="Settings_ClickedAsync" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Settings.png}"/>
     </ContentPage.ToolbarItems>
@@ -29,11 +30,18 @@
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Horizontal">
-                        <Image Source="{Binding ThumbUrl}" />
-                        <Label Text="{Binding Title}" />
-                    </StackLayout>
-                </ViewCell>
+                    <Grid Padding="10, 2, 0, 2" BackgroundColor="{StaticResource ItemDividerColour}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0"/>
+                        <Label Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource ItemTitleFontColour}" FontSize="Medium" Grid.Row="0" Grid.Column="1"/>
+                    </Grid>
+                </ViewCell>                
             </DataTemplate>
         </ListView.ItemTemplate>
 
@@ -49,7 +57,7 @@
                 <!-- the loading content -->
                 <ActivityIndicator
                     IsRunning="true"
-                    Color="Purple"
+                    Color="{StaticResource TitleFontColour}"
                     WidthRequest="20"
                     HeightRequest="20"/>
             </Grid>

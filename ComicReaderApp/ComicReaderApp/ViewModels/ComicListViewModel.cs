@@ -72,6 +72,13 @@ namespace ComicReaderApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private object GetResourceValue(string keyName)
+        {
+            // Search all dictionaries
+            if (Application.Current.Resources.TryGetValue(keyName, out var retVal)) { }
+            return retVal;
+        }
         #endregion
 
         #region Navigation
@@ -101,7 +108,7 @@ namespace ComicReaderApp.ViewModels
                             //Debug.WriteLine($"Clicked {index}");
                         },
 
-                        BackgroundColor = Color.Black,
+                        BackgroundColor = (Color)GetResourceValue("HeaderBackGroundColour"),
                         DidDisplayPhoto = (index) =>
                         {
                             //Debug.WriteLine($"Selection changed: {index}");

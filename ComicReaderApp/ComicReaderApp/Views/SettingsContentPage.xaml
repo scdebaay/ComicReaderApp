@@ -2,26 +2,25 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ComicReaderApp.Views.SettingsContentPage"
-             xmlns:behaviors="clr-namespace:ComicReaderApp.Behaviors">
+             Title="Comic Cloud App"
+             BackgroundColor="{StaticResource MainBackGroundColour}">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Margin="10, 10, 10, 10">                
-                <Label Text="Comic Cloud Settings"                
-                HorizontalOptions="CenterAndExpand" FontSize="Large" />
-                <Label Text="ComicCloud URL"/>
+            <StackLayout Margin="10, 10, 10, 10">
+                <Label Text="ComicCloud URL" TextColor="{StaticResource ItemTitleFontColour}"/>
                 <Entry Placeholder="{Binding ApiLocation}" Text="{Binding ApiLocation}" Keyboard="Text"/>
-                <Label Text="Initial Page Size"/>
+                <Label Text="Initial Page Size" TextColor="{StaticResource ItemTitleFontColour}"/>
                 <Entry Placeholder="{Binding ComicSize}" Text="{Binding ComicSize}" Keyboard="Numeric"/>
-                <Label Text="Comics per page" />
+                <Label Text="Comics per page" TextColor="{StaticResource ItemTitleFontColour}"/>
                 <Entry Placeholder="{Binding PageLimit}" Text="{Binding PageLimit}" Keyboard="Numeric"/>
                 <StackLayout Orientation="Horizontal" Padding="10, 0, 0, 0">
-                    <Button Command="{Binding Cancel}" Text="Cancel"/>
-                    <Button Command="{Binding Save}" Text="Save"/>
+                    <Button Command="{Binding Cancel}" Text="Cancel" BackgroundColor="{StaticResource MainBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}"/>
+                    <Button Command="{Binding Save}" Text="Save" BackgroundColor="{StaticResource MainBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}"/>
                 </StackLayout>
                 <Label Text="Version Information"                
-                HorizontalOptions="CenterAndExpand" FontSize="Large" />
-                <Label Text="App Version:"/>
-                <Label Text="{Binding AppVersion}" FontSize="Small"/>
+                HorizontalOptions="CenterAndExpand" FontSize="Large" TextColor="{StaticResource TitleFontColour}"/>
+                <Label Text="App Version:" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="{Binding AppVersion}" FontSize="Small" TextColor="{StaticResource ItemTitleFontColour}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

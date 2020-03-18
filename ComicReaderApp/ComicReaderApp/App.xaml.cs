@@ -10,6 +10,8 @@ namespace ComicReaderApp
 			InitializeComponent();
             //UserSettings.ClearEverything();
             MainPage = new NavigationPage(new ComicListViewPage());
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)GetResourceValue("HeaderBackGroundColour");
+            ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)GetResourceValue("TitleFontColour");
         }
 
 		protected override void OnStart ()
@@ -26,5 +28,12 @@ namespace ComicReaderApp
 		{
 			// Handle when your app resumes
 		}
-	}
+
+        private object GetResourceValue(string keyName)
+        {
+            // Search all dictionaries
+            if (Application.Current.Resources.TryGetValue(keyName, out var retVal)) { }
+            return retVal;
+        }
+    }
 }

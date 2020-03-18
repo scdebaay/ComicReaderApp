@@ -263,3 +263,6 @@ __pycache__/
 *.json
 *.xml
 /ComicReaderApp/ComicReaderApp/Data/APICallExamples.txt
+/ComicReaderApp/ComicReaderApp.Android/Resources/mipmap-hdpi/Thumbs.db
+/ComicReaderApp/ComicReaderApp.Android/Resources/mipmap-xhdpi/Thumbs.db
+/ComicReaderApp/ComicReaderApp.Android/Resources/mipmap-xxhdpi/Thumbs.db
