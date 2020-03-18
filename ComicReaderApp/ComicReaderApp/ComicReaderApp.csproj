@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Data\Settings.json" />
-    <EmbeddedResource Include="Resources\Settings.png" />
+    <EmbeddedResource Include="Resources\Images\Settings.png" />
   </ItemGroup>
 
   <ItemGroup>

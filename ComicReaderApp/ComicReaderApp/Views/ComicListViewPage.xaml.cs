@@ -1,8 +1,6 @@
-﻿using ComicReaderApp.Models;
-using ComicReaderApp.ViewModels;
+﻿using ComicReaderApp.ViewModels;
 using ComicReaderApp.Views;
 using System;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace ComicReaderApp

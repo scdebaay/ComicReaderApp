@@ -1,16 +1,22 @@
 ﻿using ComicReaderApp.Data;
 using ComicReaderApp.Models;
 using ComicReaderApp.Views;
+using System;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Extended;
+using Xamarin.Forms.Xaml;
 
 namespace ComicReaderApp.ViewModels
 {
     class ComicListViewModel : INotifyPropertyChanged
     {
+        readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
+
+        #region Scrollview
         public InfiniteScrollCollection<ComicListItemModel> Items { get; }
 
         private bool _isLoadingMore;
@@ -26,14 +32,7 @@ namespace ComicReaderApp.ViewModels
                 OnPropertyChanged(nameof(IsLoadingMore));
             }
         }
-
-        readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
-
-        public ImageSource SettingIcon = ImageSource.FromResource("ComicReaderApp.Resources.Setings.png");
-
         public int TotalComics { get; private set; }
-
-        readonly INavigation _navigation;
 
         public ComicListViewModel(INavigation navigation)
         {
@@ -62,14 +61,19 @@ namespace ComicReaderApp.ViewModels
             };
             Items.LoadMoreAsync();
         }
+        #endregion
 
+        #region Property Helpers
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
 
+        #region Navigation
+        readonly INavigation _navigation;
         public ICommand ItemTappedCommand
         {
             get
@@ -81,5 +85,6 @@ namespace ComicReaderApp.ViewModels
                 });
             }
         }
+        #endregion
     }
 }

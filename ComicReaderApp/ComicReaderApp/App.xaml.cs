@@ -8,7 +8,7 @@ namespace ComicReaderApp
         public App ()
 		{
 			InitializeComponent();
-            UserSettings.ClearEverything();
+            //UserSettings.ClearEverything();
             MainPage = new NavigationPage(new ComicListViewPage());
         }
 
