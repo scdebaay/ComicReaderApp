@@ -1,7 +1,9 @@
 ﻿using ComicReaderApp.Data;
 using ComicReaderApp.Models;
 using ComicReaderApp.Views;
+using Stormlion.PhotoBrowser;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -81,7 +83,33 @@ namespace ComicReaderApp.ViewModels
                 return new Command((TappedltemArgs) =>
                 {
                     ComicListItemModel comic = TappedltemArgs as ComicListItemModel;
-                    _navigation.PushAsync(new ComicBrowserPage(comic));
+                    List<Photo> ComicPages = new List<Photo>();
+                    for (int page = 0; page <= comic.TotalPages; page++)
+                    {
+                        Photo photopage = new Photo
+                        {
+                            URL = $"{UserSettings.ApiLocation}?file={comic.Path}&page={page}&size={UserSettings.ComicSize}",
+                            Title = $"{comic.Title}-Page {page}"
+                        };
+                        ComicPages.Add(photopage);
+                    }
+                    new PhotoBrowser
+                    {
+                        Photos = ComicPages,
+                        ActionButtonPressed = (index) =>
+                        {
+                            //Debug.WriteLine($"Clicked {index}");
+                        },
+
+                        BackgroundColor = Color.Black,
+                        DidDisplayPhoto = (index) =>
+                        {
+                            //Debug.WriteLine($"Selection changed: {index}");
+                        },
+
+                        Android_ContainerPaddingPx = 20,
+                        iOS_ZoomPhotosToFill = false
+                    }.Show();
                 });
             }
         }
