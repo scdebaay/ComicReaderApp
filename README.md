@@ -6,3 +6,7 @@ Comic Cloud API can be found on: https://github.com/scdebaay/WWW.DE-BAAY.NL-Onli
 This repo also includes a web front-end reader.
 
 The app uses JSON.NET, CrossFire Photobrowser and Plugin.Settings NuGet packages.
+
+Also big thanks to this blog:
+https://www.andrewhoefling.com/Blog/Post/xamarin-app-configuration-control-your-app-settings
+on how to implement Settings in a static manner. Have some work to do on the API application settings. :D
