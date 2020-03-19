@@ -5,4 +5,4 @@ I don't have access to anything Apple related.
 Comic Cloud API can be found on: https://github.com/scdebaay/WWW.DE-BAAY.NL-Online-Comic-Reader
 This repo also includes a web front-end reader.
 
-The app uses JSON.NET and CrossFire Photobrowser NuGet packages.
+The app uses JSON.NET, CrossFire Photobrowser and Plugin.Settings NuGet packages.
