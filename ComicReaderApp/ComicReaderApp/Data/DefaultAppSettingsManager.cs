@@ -28,7 +28,7 @@ namespace ComicReaderApp.Data
                     _settings = JObject.Parse(json);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Debug.WriteLine("Unable to load settings file");
             }
