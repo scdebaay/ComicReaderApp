@@ -81,6 +81,20 @@ namespace ComicReaderApp.ViewModels
             }
         }
 
+        public ICommand ClearBookmarks
+        { 
+            get
+            {
+                return new Command(() =>
+                {
+                    ComicBookmarkStore.LoadBookmarks();
+                    ComicBookmarkStore.Clear();
+                    ComicBookmarkStore.SaveBookmarks();
+                }
+                );
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

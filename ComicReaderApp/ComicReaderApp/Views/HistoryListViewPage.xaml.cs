@@ -7,19 +7,19 @@ using Xamarin.Forms.Xaml;
 namespace ComicReaderApp
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ComicListViewPage : ContentPage
+    public partial class HistoryListViewPage : ContentPage
     {
 
-        public ComicListViewPage()
+        public HistoryListViewPage()
         {            
             InitializeComponent();            
-            BindingContext = new ComicListViewModel(Navigation);
+            BindingContext = new ComicHistoryViewModel(Navigation);
             
         }
 
-        private ComicListViewModel ComicListViewModel
+        private ComicHistoryViewModel HistoryListViewModel
         {
-            get { return GetValue(BindingContextProperty) as ComicListViewModel; }
+            get { return GetValue(BindingContextProperty) as ComicHistoryViewModel; }
             set { SetValue(BindingContextProperty, value); }
         }
 
@@ -31,18 +31,18 @@ namespace ComicReaderApp
             await Navigation.PushAsync(new SettingsContentPage());            
         }
 
-        async void History_ClickedAsync(object sender, EventArgs e)
+        void Delete_Clicked(object sender, EventArgs e)
         {
-            RefreshInitialPage = true;
-            await Navigation.PushAsync(new HistoryListViewPage());
+            HistoryListViewModel.Items.Clear();
+            HistoryListViewModel.ClearHistory();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             if (RefreshInitialPage) {
-                ComicListViewModel.Items.Clear();
-                ComicListViewModel.Items.LoadMoreAsync();
+                HistoryListViewModel.Items.Clear();
+                HistoryListViewModel.Items.LoadMoreAsync();
                 RefreshInitialPage = false;
             }
         }

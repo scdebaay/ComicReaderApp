@@ -10,9 +10,14 @@ using Xamarin.Forms.Extended;
 
 namespace ComicReaderApp.ViewModels
 {
-    class ComicListViewModel : INotifyPropertyChanged
+    class ComicHistoryViewModel : INotifyPropertyChanged
     {
-        readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
+        readonly ComicHistoryModel<ComicListItemModel> history = new ComicHistoryModel<ComicListItemModel>();
+        public void ClearHistory()
+        {
+            history.Clear();
+            UserSettings.History = history.JSONResult;
+        }
 
         #region Scrollview
         public InfiniteScrollCollection<ComicListItemModel> Items { get; }
@@ -32,19 +37,21 @@ namespace ComicReaderApp.ViewModels
         }
         public int TotalComics { get; private set; }
 
-        public ComicListViewModel(INavigation navigation)
+        public ComicHistoryViewModel(INavigation navigation)
         {
+            history.LoadHistory();
             _navigation = navigation;
             Items = new InfiniteScrollCollection<ComicListItemModel>
             {
                 OnLoadMore = async () =>
                 {
                     IsLoadingMore = true;
-                    var page = (Items.Count / UserSettings.PageLimit) + 1;
-                    var apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
-                    TotalComics = apiCallResult.AvailableFiles;
+                    var page = (Items.Count / UserSettings.PageLimit);
+                    var startItem = (page * UserSettings.PageLimit);
+                    var histLoadResult = await history.GetRangeAsync(startItem, UserSettings.PageLimit);                    
+                    TotalComics = history.Count;
                     InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
-                    foreach (var _comic in apiCallResult.Files)
+                    foreach (var _comic in histLoadResult)
                     {
                         items.Add(_comic);
                     }
@@ -92,22 +99,6 @@ namespace ComicReaderApp.ViewModels
                     {
                         bookMark = ComicBookmarkStore.Get(comic.Title);
                     }
-
-                    ComicHistoryModel<ComicListItemModel> history = new ComicHistoryModel<ComicListItemModel>();
-                    if (UserSettings.History == "[]")
-                    {
-                        history.Add(comic);
-                    }
-                    else
-                    {
-                        history.LoadHistory();
-                        if (!history.Items.Contains(comic))
-                        {
-                            history.Add(comic);
-                        }
-                    }
-                    UserSettings.History = history.JSONResult;
-
                     List<Photo> ComicPages = new List<Photo>();
                     for (int page = 0; page <= comic.TotalPages; page++)
                     {

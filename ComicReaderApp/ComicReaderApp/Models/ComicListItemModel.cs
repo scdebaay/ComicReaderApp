@@ -1,8 +1,9 @@
 ﻿using ComicReaderApp.Data;
+using System;
 
 namespace ComicReaderApp.Models
 {
-    public class ComicListItemModel
+    public class ComicListItemModel : IEquatable<ComicListItemModel>
     {
         public ComicListItemModel()
         {
@@ -26,5 +27,16 @@ namespace ComicReaderApp.Models
         public string Title { get; set; }
 
         public int TotalPages { get; set; }
+
+        public bool Equals(ComicListItemModel other)
+        {
+            if (other == null)
+                return false;
+
+            if (this.Title == other.Title)
+                return true;
+            else
+                return false;
+        }
     }
 }

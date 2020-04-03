@@ -14,9 +14,10 @@
                 <Label Text="Comics per page" TextColor="{StaticResource ItemTitleFontColour}"/>
                 <Entry Placeholder="{Binding PageLimit}" Text="{Binding PageLimit}" Keyboard="Numeric"/>
                 <StackLayout Orientation="Horizontal" Padding="10, 0, 0, 0">
-                    <Button Command="{Binding Cancel}" Text="Cancel" BackgroundColor="{StaticResource MainBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}"/>
-                    <Button Command="{Binding Save}" Text="Save" BackgroundColor="{StaticResource MainBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}"/>
+                    <Button Command="{Binding Cancel}" Text="Cancel" BackgroundColor="{StaticResource HeaderBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}"/>
+                    <Button Command="{Binding Save}" Text="Save" BackgroundColor="{StaticResource HeaderBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}"/>
                 </StackLayout>
+                <Button Command="{Binding ClearBookmarks}" Text="Clear Bookmarks" BackgroundColor="{StaticResource HeaderBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}"/>
                 <Label Text="Version Information"                
                 HorizontalOptions="CenterAndExpand" FontSize="Large" TextColor="{StaticResource TitleFontColour}"/>
                 <Label Text="App Version:" TextColor="{StaticResource ItemTitleFontColour}"/>

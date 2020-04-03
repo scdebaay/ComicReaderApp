@@ -18,6 +18,7 @@ namespace ComicReaderApp.Data
         {
             AppSettings.Clear();
         }
+
         #endregion
 
         #region Public Settings
@@ -43,6 +44,27 @@ namespace ComicReaderApp.Data
         {
             get => AppSettings.GetValueOrDefault(nameof(ComicSize), ComicSizeDefault);
             set => AppSettings.AddOrUpdateValue(nameof(ComicSize), value);
+        }
+
+        private static readonly string HistoryDefault = "[]";
+        public static string History
+        {
+            get => AppSettings.GetValueOrDefault(nameof(History), HistoryDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(History), value);
+        }
+
+        private static readonly string FavoritesDefault = "[]";
+        public static string Favorites
+        {
+            get => AppSettings.GetValueOrDefault(nameof(Favorites), FavoritesDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Favorites), value);
+        }
+
+        private static readonly string BookMarkDefault = @"{""bookmark"":""0""}";
+        public static string BookMarks
+        {
+            get => AppSettings.GetValueOrDefault(nameof(BookMarks), BookMarkDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(BookMarks), value);
         }
         #endregion
     }
