@@ -11,6 +11,7 @@
     xmlns:extensions="clr-namespace:ComicReaderApp.Extensions"
     BackgroundColor="{StaticResource MainBackGroundColour}">
     <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Favorites_ClickedAsync" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Favorite.png}"/>
         <ToolbarItem Clicked="History_ClickedAsync" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.History.png}"/>
         <ToolbarItem Clicked="Settings_ClickedAsync" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Settings.png}"/>
     </ContentPage.ToolbarItems>
@@ -31,16 +32,31 @@
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <Grid Padding="10, 2, 0, 2" BackgroundColor="{StaticResource ItemDividerColour}">
+                    <Grid Padding="10, 2, 15, 2" BackgroundColor="{StaticResource ItemDividerColour}" HeightRequest="100">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="15*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0"/>
+                        <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0" HeightRequest="150"/>
                         <Label Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource ItemTitleFontColour}" FontSize="Medium" Grid.Row="0" Grid.Column="1"/>
+                        <ImageButton Grid.Row="0" Grid.Column="3" Command="{Binding OnSwitchFavorite}" CommandParameter="{Binding SelectedItem}" BackgroundColor="{StaticResource ItemDividerColour}">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                                         Binding="{Binding Favorite}"
+                                                         Value="False">
+                                    <Setter Property="Source" Value="{extensions:ImageResource ComicReaderApp.Resources.Images.Favorite.png}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="ImageButton"
+                                                         Binding="{Binding Favorite}"
+                                                         Value="True">
+                                    <Setter Property="Source" Value="{extensions:ImageResource ComicReaderApp.Resources.Images.FavoriteOn.png}" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
                     </Grid>
                 </ViewCell>                
             </DataTemplate>

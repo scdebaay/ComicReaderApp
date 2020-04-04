@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using ComicReaderApp.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ComicReaderApp.Models;
-using ComicReaderApp.Data;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ComicReaderApp.Models

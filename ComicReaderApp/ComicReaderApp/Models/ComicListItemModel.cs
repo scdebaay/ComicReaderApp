@@ -1,9 +1,15 @@
 ﻿using ComicReaderApp.Data;
+using Newtonsoft.Json;
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace ComicReaderApp.Models
 {
-    public class ComicListItemModel : IEquatable<ComicListItemModel>
+    public class ComicListItemModel : IEquatable<ComicListItemModel>, INotifyPropertyChanged
     {
         public ComicListItemModel()
         {
@@ -17,7 +23,11 @@ namespace ComicReaderApp.Models
             Path = path;
             Title = name;
             ThumbUrl = $"{UserSettings.ApiLocation}?file={Path}&page=0&size=100";
-            TotalPages = totalpages;
+            TotalPages = totalpages;            
+            if (ComicFavoriteStore.Contains(Title))
+            {
+                Favorite = true;
+            }
         }
 
         public string Path { get; private set; }
@@ -28,6 +38,10 @@ namespace ComicReaderApp.Models
 
         public int TotalPages { get; set; }
 
+        public bool Favorite { get; set; } = false;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public bool Equals(ComicListItemModel other)
         {
             if (other == null)
@@ -37,6 +51,42 @@ namespace ComicReaderApp.Models
                 return true;
             else
                 return false;
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        [JsonIgnore]
+        public ComicListItemModel SelectedItem
+        {
+            get { return this; }
+        }
+
+        [JsonIgnore]
+        public ICommand OnSwitchFavorite
+        {
+            get
+            {
+                return new Command((ImageButtonTapped) =>
+                {
+                    ComicListItemModel comic = ImageButtonTapped as ComicListItemModel;
+                    if (ComicFavoriteStore.Contains(comic.Title))
+                    {
+                        comic.Favorite = false;
+                        ComicFavoriteStore.Remove(comic.Title);
+                        OnPropertyChanged(nameof(Favorite));
+                    }
+                    else
+                    {
+                        comic.Favorite = true;
+                        ComicFavoriteStore.Set(comic.Title, true);
+                        OnPropertyChanged(nameof(Favorite));
+                    }
+                    ComicFavoriteStore.SaveFavorites();
+                });
+            }
         }
     }
 }

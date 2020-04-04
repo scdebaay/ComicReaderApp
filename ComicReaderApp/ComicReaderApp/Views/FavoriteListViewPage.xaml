@@ -3,8 +3,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ComicReaderApp"    
-    x:Class="ComicReaderApp.HistoryListViewPage"
-    Title="Comic History"
+    x:Class="ComicReaderApp.FavoriteListViewPage"
+    Title="Comic Favrorites"
     xmlns:scroll="clr-namespace:Xamarin.Forms.Extended;assembly=Xamarin.Forms.Extended.InfiniteScrolling"
     xmlns:behaviors="clr-namespace:ComicReaderApp.Behaviors"
     xmlns:resources="clr-namespace:ComicReaderApp.Converters"
@@ -42,7 +42,7 @@
                         <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0"/>
                         <Label Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource ItemTitleFontColour}" FontSize="Medium" Grid.Row="0" Grid.Column="1"/>
                     </Grid>
-                </ViewCell>                
+                </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
 

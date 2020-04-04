@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using ComicReaderApp.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ComicReaderApp.Models;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ComicReaderApp.Models
 {
@@ -33,7 +33,22 @@ namespace ComicReaderApp.Models
         public string JSONResult
         {
             get { return JsonConvert.SerializeObject(this); }
-        }        
+        }
+
+        public void LoadFavorites()
+        {
+            JArray favoriteArray = JsonConvert.DeserializeObject<JArray>(UserSettings.History);
+            if (favoriteArray.HasValues)
+            {
+                foreach (var favcomic in favoriteArray.Children())
+                {
+                    Models.ComicListItemModel comic = new Models.ComicListItemModel((string)favcomic["Path"], ((string)favcomic["Title"]), favcomic["TotalPages"].ToObject<int>());
+                    Items.Add(comic);
+                }
+            }
+
+
+        }
 
         public bool Contains(Models.ComicListItemModel item)
         {
@@ -80,12 +95,16 @@ namespace ComicReaderApp.Models
             return Items.GetEnumerator();
         }
 
-        public List<Models.ComicListItemModel> GetRange(int index, int count)
+        public async Task<List<Models.ComicListItemModel>> GetRange(int index, int count)
         {
             List<Models.ComicListItemModel> result = new List<Models.ComicListItemModel>();
+            if (this.Count < count)
+            {
+                count = this.Count;
+            }
             for (int i = index; i < (index + count); i++)
             {
-                result.Add(this.Items[i]);
+                await Task.Run(() => result.Add(this.Items[i]));
             }
             return result;
         }

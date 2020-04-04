@@ -1,6 +1,7 @@
 ﻿using ComicReaderApp.ViewModels;
 using ComicReaderApp.Views;
 using System;
+using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -29,6 +30,12 @@ namespace ComicReaderApp
         {
             RefreshInitialPage = true;
             await Navigation.PushAsync(new SettingsContentPage());            
+        }
+
+        async void Favorites_ClickedAsync(object sender, EventArgs e)
+        {
+            RefreshInitialPage = true;
+            await Navigation.PushAsync(new FavoriteListViewPage());
         }
 
         async void History_ClickedAsync(object sender, EventArgs e)

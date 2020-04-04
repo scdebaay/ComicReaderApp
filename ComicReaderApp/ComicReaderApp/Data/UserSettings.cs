@@ -53,7 +53,7 @@ namespace ComicReaderApp.Data
             set => AppSettings.AddOrUpdateValue(nameof(History), value);
         }
 
-        private static readonly string FavoritesDefault = "[]";
+        private static readonly string FavoritesDefault = @"{""favorite"":""false""}";
         public static string Favorites
         {
             get => AppSettings.GetValueOrDefault(nameof(Favorites), FavoritesDefault);

@@ -4,11 +4,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Plugin.Toast;
+using Plugin.Toast.Abstractions;
 
 namespace ComicReaderApp.ViewModels
 {
     class SettingsPageViewModel : INotifyPropertyChanged
     {
+        ToastLength toastLength = ToastLength.Short;
         public SettingsPageViewModel()
         {
             ApiLocation = UserSettings.ApiLocation;
@@ -76,6 +79,7 @@ namespace ComicReaderApp.ViewModels
                     UserSettings.ApiLocation = ApiLocation;
                     UserSettings.PageLimit = PageLimit;
                     UserSettings.ComicSize = ComicSize;
+                    CrossToastPopUp.Current.ShowToastSuccess("Settings saved", toastLength);
                 }
                 );
             }
@@ -90,6 +94,7 @@ namespace ComicReaderApp.ViewModels
                     ComicBookmarkStore.LoadBookmarks();
                     ComicBookmarkStore.Clear();
                     ComicBookmarkStore.SaveBookmarks();
+                    CrossToastPopUp.Current.ShowToastWarning("Bookmarks cleared", toastLength);
                 }
                 );
             }

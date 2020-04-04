@@ -9,7 +9,9 @@ namespace ComicReaderApp
 		{
 			InitializeComponent();
             //UserSettings.ClearEverything();
-            MainPage = new NavigationPage(new ComicListViewPage());
+			ComicFavoriteStore.LoadFavorites();
+			ComicBookmarkStore.LoadBookmarks();
+			MainPage = new NavigationPage(new ComicListViewPage());
             ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)GetResourceValue("HeaderBackGroundColour");
             ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)GetResourceValue("TitleFontColour");
         }

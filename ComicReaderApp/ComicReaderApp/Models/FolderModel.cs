@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ComicReaderApp.Data;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace ComicReaderApp.Models
@@ -34,6 +35,10 @@ namespace ComicReaderApp.Models
                 foreach (var comicFile in fileArray.Children())
                 {
                     ComicListItemModel comic = new ComicListItemModel((string)comicFile["@path"], ((string)comicFile["@name"]).Substring(0, ((string)comicFile["@name"]).Length - 4), comicFile["@totalpages"].ToObject<int>());
+                    if (ComicFavoriteStore.Contains(comic.Title))
+                    {
+                        comic.Favorite = true;
+                    }
                     files.Add(comic);
                 }
             }

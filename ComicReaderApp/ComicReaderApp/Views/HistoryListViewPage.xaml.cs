@@ -3,18 +3,19 @@ using ComicReaderApp.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Plugin.Toast;
+using Plugin.Toast.Abstractions;
 
 namespace ComicReaderApp
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HistoryListViewPage : ContentPage
     {
-
+        ToastLength toastLength = ToastLength.Short;
         public HistoryListViewPage()
         {            
             InitializeComponent();            
-            BindingContext = new ComicHistoryViewModel(Navigation);
-            
+            BindingContext = new ComicHistoryViewModel(Navigation);            
         }
 
         private ComicHistoryViewModel HistoryListViewModel
@@ -35,6 +36,7 @@ namespace ComicReaderApp
         {
             HistoryListViewModel.Items.Clear();
             HistoryListViewModel.ClearHistory();
+            CrossToastPopUp.Current.ShowToastWarning("History cleared", toastLength);
         }
 
         protected override void OnAppearing()

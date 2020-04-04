@@ -1,27 +1,26 @@
 ﻿using ComicReaderApp.Data;
 using ComicReaderApp.Models;
 using Stormlion.PhotoBrowser;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Extended;
-using Plugin.Toast;
-using Plugin.Toast.Abstractions;
 
 namespace ComicReaderApp.ViewModels
 {
-    class ComicListViewModel : INotifyPropertyChanged
+    class ComicFavoriteViewModel : INotifyPropertyChanged
     {
-        ToastLength toastLength = ToastLength.Short;
-        readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
+        public void ClearFavorites()
+        {
+            ComicFavoriteStore.Clear();
+            ComicFavoriteStore.SaveFavorites();
+        }
 
         #region Scrollview
         public InfiniteScrollCollection<ComicListItemModel> Items { get; }
-
+        readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
         private bool _isLoadingMore;
         public bool IsLoadingMore
         {
@@ -36,8 +35,9 @@ namespace ComicReaderApp.ViewModels
             }
         }
         public int TotalComics { get; private set; }
+        private int pageIterator { get; set; }
 
-        public ComicListViewModel(INavigation navigation)
+        public ComicFavoriteViewModel(INavigation navigation)
         {
             _navigation = navigation;
             Items = new InfiniteScrollCollection<ComicListItemModel>
@@ -45,15 +45,18 @@ namespace ComicReaderApp.ViewModels
                 OnLoadMore = async () =>
                 {
                     IsLoadingMore = true;
-                    var page = (Items.Count / UserSettings.PageLimit) + 1;
+                    var page = (pageIterator / UserSettings.PageLimit) + 1;
                     var apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
-                    TotalComics = apiCallResult.AvailableFiles;
+                    TotalComics = ComicFavoriteStore.Count -1;
                     InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
+                    pageIterator += apiCallResult.Files.Count;
                     foreach (var _comic in apiCallResult.Files)
                     {
-                        items.Add(_comic);
+                        if (_comic.Favorite)
+                        {
+                            items.Add(_comic);
+                        }
                     }
-
                     IsLoadingMore = false;
                     return items;
                 },
@@ -91,30 +94,12 @@ namespace ComicReaderApp.ViewModels
                 return new Command((TappedltemArgs) =>
                 {
                     ComicListItemModel comic = TappedltemArgs as ComicListItemModel;
-                    #region Bookmarks setup
+                    ComicBookmarkStore.LoadBookmarks();
                     int bookMark = 0;
                     if (ComicBookmarkStore.Contains(comic.Title))
                     {
                         bookMark = ComicBookmarkStore.Get(comic.Title);
                     }
-                    #endregion
-                    #region History
-                    ComicHistoryModel<ComicListItemModel> history = new ComicHistoryModel<ComicListItemModel>();
-                    if (UserSettings.History == "[]")
-                    {
-                        history.Add(comic);
-                    }
-                    else
-                    {
-                        history.LoadHistory();
-                        if (!history.Items.Contains(comic))
-                        {
-                            history.Add(comic);
-                        }
-                    }
-                    UserSettings.History = history.JSONResult;
-                    #endregion
-                    #region ComicBrowser
                     List<Photo> ComicPages = new List<Photo>();
                     for (int page = 0; page <= comic.TotalPages; page++)
                     {
@@ -132,7 +117,6 @@ namespace ComicReaderApp.ViewModels
                         {
                             ComicBookmarkStore.Set(comic.Title, index);
                             ComicBookmarkStore.SaveBookmarks();
-                            CrossToastPopUp.Current.ShowToastSuccess("Bookmark saved", toastLength);
                         },
                         StartIndex = bookMark,
                         BackgroundColor = (Color)GetResourceValue("HeaderBackGroundColour"),
@@ -143,7 +127,6 @@ namespace ComicReaderApp.ViewModels
                         Android_ContainerPaddingPx = 20,
                         iOS_ZoomPhotosToFill = false
                     }.Show();
-                    #endregion
                 });
             }
         }
