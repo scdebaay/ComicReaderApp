@@ -1,28 +1,55 @@
 ﻿using ComicReaderApp.Data;
 using ComicReaderApp.Models;
+using Plugin.Toast;
+using Plugin.Toast.Abstractions;
 using Stormlion.PhotoBrowser;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Extended;
-using Plugin.Toast;
-using Plugin.Toast.Abstractions;
 
 namespace ComicReaderApp.ViewModels
 {
+    /// <summary>
+    /// Comic List viewmodel. VM for Initial page, Comic List. Takes care of infinite scroll and Comic browsing, using Photo Browser.
+    /// </summary>
     class ComicListViewModel : INotifyPropertyChanged
     {
-        ToastLength toastLength = ToastLength.Short;
+        #region Readonly fields
+        /// <summary>
+        /// Toast length initialization. Toast being used to confirm bookmark set.
+        /// </summary>
+        readonly ToastLength toastLength = ToastLength.Short;
+        
+        /// <summary>
+        /// Instantiate API call service object. This handles API calls to load list of available Comic List Items.
+        /// </summary>
         readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
-
-        #region Scrollview
+        #endregion
+        
+        /// <summary>
+        /// Public accessor for InfiniteScrollCollection, Items. Used by Comic Listview page to display available Comic List items.
+        /// </summary>
         public InfiniteScrollCollection<ComicListItemModel> Items { get; }
 
+        #region Private fields
+        /// <summary>
+        /// Private bool represents List lodaing status.
+        /// </summary>
         private bool _isLoadingMore;
+        
+        /// <summary>
+        /// Private int, represents the number of available Comic List items from the API
+        /// </summary>
+        private int TotalComics { get; set; }
+        #endregion
+
+        #region Public fields
+        /// <summary>
+        /// Public accessor for _isLoadingMore boolean field. Raises a property changed event when set.
+        /// </summary>
         public bool IsLoadingMore
         {
             get
@@ -35,11 +62,15 @@ namespace ComicReaderApp.ViewModels
                 OnPropertyChanged(nameof(IsLoadingMore));
             }
         }
-        public int TotalComics { get; private set; }
-
-        public ComicListViewModel(INavigation navigation)
+        #endregion
+        
+        #region Constructor
+        /// <summary>
+        /// Constructor for Comic List ViewModel. Initiates InfiniteScrollCollection of Comic List items, calls API Call service to populate list.
+        /// Detects when list is scrolled to the end and then calls for more items.
+        /// </summary>
+        public ComicListViewModel()
         {
-            _navigation = navigation;
             Items = new InfiniteScrollCollection<ComicListItemModel>
             {
                 OnLoadMore = async () =>
@@ -82,8 +113,13 @@ namespace ComicReaderApp.ViewModels
         }
         #endregion
 
-        #region Navigation
-        readonly INavigation _navigation;
+        #region Start comic reading
+        /// <summary>
+        /// Public Command to handle Comic List item tapped (TappedItemArgs)
+        /// Checks ComicBookmarkStore to see whether a page in the tapped comic was bookmarked. If true, starts browsing at that page.
+        /// Checks ComicBookHistoryStore to see whether the comic was opened before. If not, then adds comic to history list.
+        /// From the Comic browser, when the action button is pressed, a bookmark is saved at the current page.
+        /// </summary>
         public ICommand ItemTappedCommand
         {
             get
@@ -107,7 +143,7 @@ namespace ComicReaderApp.ViewModels
                     else
                     {
                         history.LoadHistory();
-                        if (!history.Items.Contains(comic))
+                        if (!history.Contains(comic))
                         {
                             history.Add(comic);
                         }

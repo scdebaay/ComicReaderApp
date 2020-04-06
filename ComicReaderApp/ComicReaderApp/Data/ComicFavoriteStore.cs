@@ -1,68 +1,108 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using ComicReaderApp.Data;
-using System.Text;
 
 namespace ComicReaderApp.Data
 {
+    /// <summary>
+    /// Comic Favorite store. Implements a dictionary with Comic title and boolean, denoting favorite=true or false
+    /// </summary>
     public class ComicFavoriteStore
     {
-        private static Dictionary<string, bool> items { get; set; } = new Dictionary<string, bool>();
+        #region private fields
+        /// <summary>
+        /// Private backing field of type dictionary for Favorite storage.
+        /// </summary>
+        private static Dictionary<string, bool> Items { get; set; } = new Dictionary<string, bool>();
+        #endregion
 
+        #region public accessors
+        /// <summary>
+        /// Public accessor to the amount of favorites in the store. ther will always be one default favorite.
+        /// </summary>
         public static int Count
         {
-            get { return items.Count; }
+            get { return Items.Count -1; }
         }
+        #endregion
 
+        #region public methods
+        /// <summary>
+        /// Setter for Favorite.
+        /// </summary>
+        /// <param name="key">String, name of the comic that is set to favorite</param>
+        /// <param name="value">Boolean, is comis is favorite or not</param>
         public static void Set(string key, bool value)
         {
-            if (items.ContainsKey(key))
+            if (Items.ContainsKey(key))
             {
-                items[key] = value;
+                Items[key] = value;
             }
             else
             {
-                items.Add(key, value);
+                Items.Add(key, value);
             }
         }
 
+        /// <summary>
+        /// Getter for Favorite
+        /// </summary>
+        /// <param name="key">Title of a comic</param>
+        /// <returns>true if comic is favorite or false if comic is not favorite</returns>
         public static bool Get(string key)
         {
             bool  result = false;
-            if (items.ContainsKey(key))
+            if (Items.ContainsKey(key))
             {
-                result = items[key];
+                result = Items[key];
             }
             return result;
         }
-
+        
+        /// <summary>
+        /// Remover for Favorite
+        /// </summary>
+        /// <param name="key">Title of a comic</param>
+        /// <returns></returns>
         public static void Remove(string key)
         {
-            items.Remove(key);
+            Items.Remove(key);
         }
 
+        /// <summary>
+        /// Check whether the dictionary contains a certain comic
+        /// </summary>
+        /// <param name="key">Title of a comic</param>
+        /// <returns>true or false</returns>
         public static bool Contains(string key)
         {
-            if (items.ContainsKey(key))
+            if (Items.ContainsKey(key))
             { return true; }
             return false;
         }
 
+        /// <summary>
+        /// Clears the Favorite store. Default favorite remains.
+        /// </summary>
         public static void Clear()
         {
-            items.Clear();
+            Items.Clear();
         }
 
+        /// <summary>
+        /// Serializes Favorites to UserSettings class, Favorites field as a JSON string.
+        /// </summary>
         public static void SaveFavorites() 
         {
-            UserSettings.Favorites = JsonConvert.SerializeObject(items);
-        }        
+            UserSettings.Favorites = JsonConvert.SerializeObject(Items);
+        }
 
+        /// <summary>
+        /// Reads the contents of UserSettings.Favorites field into this class.
+        /// </summary>
         public static void LoadFavorites()
         {
-            items = JsonConvert.DeserializeObject<Dictionary<string, bool>>(UserSettings.Favorites);
+            Items = JsonConvert.DeserializeObject<Dictionary<string, bool>>(UserSettings.Favorites);
         }
+        #endregion
     }
 }

@@ -1,21 +1,25 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace ComicReaderApp.Data
 {
     public class DefaultAppSettingsManager
     {
+        #region private fields
         private static DefaultAppSettingsManager _instance;
         readonly JObject _settings;
 
         private const string Namespace = "ComicReaderApp.Data";
         private const string FileName = "Settings.json";
+        #endregion
 
+        /// <summary>
+        /// DefaultAppSettingsManager constructor. Instantiates manager to _instance field. Tries to read Settings.json.
+        /// Stores resulting JObject in readonly _settings field
+        /// </summary>
         private DefaultAppSettingsManager()
         {
             try
@@ -34,6 +38,10 @@ namespace ComicReaderApp.Data
             }
         }
 
+        #region instance
+        /// <summary>
+        /// Public accessor to instantiate manager object. When requested, instantiates class and returns the _instance field.
+        /// </summary>
         public static DefaultAppSettingsManager Settings
         {
             get
@@ -46,7 +54,14 @@ namespace ComicReaderApp.Data
                 return _instance;
             }
         }
+        #endregion
 
+        #region public settings
+        /// <summary>
+        /// Public accessor for generic, non-defined Settings.
+        /// </summary>
+        /// <param name="name">Name of the setting to access. Tries to find setting of "name" in the Settings class. If not found, returns an empty string</param>
+        /// <returns></returns>
         public string this[string name]
         {
             get
@@ -71,19 +86,29 @@ namespace ComicReaderApp.Data
             }
         }
 
+        /// <summary>
+        /// Public accessor for API location setting. User changes to this setting are stored in the UserSetting class.
+        /// </summary>
         public static string ApiLocation
         {
             get { return Settings["apiLocation"]; }
         }
 
+        /// <summary>
+        /// Public accessor for page limit setting. User changes to this setting are stored in the UserSetting class. Accessed setting converted to int
+        /// </summary>
         public static int PageLimit
         {
             get { return int.Parse(Settings["pageLimit"]); }
         }
 
+        /// <summary>
+        /// Public accessor for default comic size setting. User changes to this setting are stored in the UserSetting class. Accessed setting converted to int
+        /// </summary>
         public static int DefaultComicSize
         {
             get { return int.Parse(Settings["defaultComicSize"]); }
         }
+        #endregion
     }
 }

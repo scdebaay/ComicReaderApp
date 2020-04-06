@@ -8,9 +8,12 @@ namespace ComicReaderApp
         public App ()
 		{
 			InitializeComponent();
+			//Used to clear all usersettings, for debugging pruposes only. Reset to comment when deploying the app.
             //UserSettings.ClearEverything();
+			//Initialize Favorites and Bookmarks. Read them from their respective storage. ToDo, refactor History into persistent storage and load from here
 			ComicFavoriteStore.LoadFavorites();
 			ComicBookmarkStore.LoadBookmarks();
+			//Instantiate new Mainpage of type Navigationpage of type ComicListViewPage and Set header background and text color.
 			MainPage = new NavigationPage(new ComicListViewPage());
             ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)GetResourceValue("HeaderBackGroundColour");
             ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)GetResourceValue("TitleFontColour");

@@ -10,11 +10,11 @@ namespace ComicReaderApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ComicListViewPage : ContentPage
     {
-
+        //Instantiate Main Comic Listview page, bind to ComicListViewModel
         public ComicListViewPage()
         {            
             InitializeComponent();            
-            BindingContext = new ComicListViewModel(Navigation);
+            BindingContext = new ComicListViewModel();
             
         }
 
@@ -24,26 +24,31 @@ namespace ComicReaderApp
             set { SetValue(BindingContextProperty, value); }
         }
 
+        //Private bool to detect whether the page should be refreshed OnAppearing. Defaults to false.
         private bool RefreshInitialPage = false;
 
+        //Click handler when Settings button is clicked. Switch to settingspage. When returning to this page, the List should be refreshed.
         async void Settings_ClickedAsync(object sender, EventArgs e)
         {
             RefreshInitialPage = true;
             await Navigation.PushAsync(new SettingsContentPage());            
         }
 
+        //Click handler when Favorites button is clicked. Switch to Favoritespage. When returning to this page, the List should not be refreshed.
         async void Favorites_ClickedAsync(object sender, EventArgs e)
         {
-            RefreshInitialPage = true;
+            RefreshInitialPage = false;
             await Navigation.PushAsync(new FavoriteListViewPage());
         }
 
+        //Click handler when History button is clicked. Switch to Historypage. When returning to this page, the List should not be refreshed.
         async void History_ClickedAsync(object sender, EventArgs e)
         {
-            RefreshInitialPage = true;
+            RefreshInitialPage = false;
             await Navigation.PushAsync(new HistoryListViewPage());
         }
 
+        //OnAppearing override, checks whether RefreshInitialPage is set, of so, the item list is cleared and reloaded.
         protected override void OnAppearing()
         {
             base.OnAppearing();

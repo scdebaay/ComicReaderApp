@@ -8,10 +8,23 @@ using Plugin.Toast;
 using Plugin.Toast.Abstractions;
 
 namespace ComicReaderApp.ViewModels
-{
+{   
+    /// <summary>
+    /// Settings viewmodel class
+    /// </summary>
     class SettingsPageViewModel : INotifyPropertyChanged
     {
-        ToastLength toastLength = ToastLength.Short;
+        #region Readonly fields        
+        /// <summary>
+        /// Toastlength definition from Toast plugin.
+        /// </summary>
+        readonly ToastLength toastLength = ToastLength.Short;
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Constructor, Reads API URL, Pagelimit and ComicSize from UserSettings object. Uses Reflection to display app version.
+        /// </summary>
         public SettingsPageViewModel()
         {
             ApiLocation = UserSettings.ApiLocation;
@@ -19,43 +32,34 @@ namespace ComicReaderApp.ViewModels
             ComicSize = UserSettings.ComicSize;
             AppVersion = $"{typeof(SettingsPageViewModel).Assembly.GetName()} version {typeof(SettingsPageViewModel).Assembly.GetName().Version}";
         }
+        #endregion
 
-        private string _apiLocation;
-        public string ApiLocation {
-            get { return _apiLocation; }
-            set {
-                _apiLocation = value;
-                OnPropertyChanged(nameof(ApiLocation));
-            }
-        }
-        private int _pageLimit;
-        public int PageLimit {
-            get { return _pageLimit; }
-            set
-            {
-                _pageLimit = value;
-                OnPropertyChanged(nameof(PageLimit));
-            }
-        }
-        private int _comicSize;
-        public int ComicSize {
-            get { return _comicSize; }
-            set
-            {
-                _comicSize = value;
-                OnPropertyChanged(nameof(ComicSize));
-            }
-        }
-        private string _appVersion;
-        public string AppVersion {
-            get { return _appVersion; }
-            set
-            {
-                _appVersion = value;
-                OnPropertyChanged(nameof(AppVersion));
-            }
-        }
+        #region Public fields
+        /// <summary>
+        /// Public accessor for API URL from the Settings View Page.
+        /// </summary>
+        public string ApiLocation { get; set; }
 
+        /// <summary>
+        /// Public accessor for PageLimit from the Settings View Page.
+        /// </summary>
+        public int PageLimit { get; set; }
+
+        /// <summary>
+        /// Public accessor for ComicSize from the Settings View Page.
+        /// </summary>
+        public int ComicSize { get; set; }
+
+        /// <summary>
+        /// Public accessor for AppVersion from the Settings View Page.
+        /// </summary>
+        public string AppVersion { get; set; }
+        #endregion
+
+        #region Commands
+        /// <summary>
+        /// Command to cancel and revert the input in the Settings fields. Rereads data from UserSettings object
+        /// </summary>
         public ICommand Cancel
         {
             get
@@ -70,6 +74,9 @@ namespace ComicReaderApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Command to confirm and save the input in the Settings fields. Stores data into UserSettings object
+        /// </summary>
         public ICommand Save
         {
             get
@@ -85,6 +92,9 @@ namespace ComicReaderApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Command to clear all bookmarks. Uses Toast to confirm deletion.
+        /// </summary>
         public ICommand ClearBookmarks
         { 
             get
@@ -99,12 +109,15 @@ namespace ComicReaderApp.ViewModels
                 );
             }
         }
+        #endregion
 
+        #region Property helpers
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

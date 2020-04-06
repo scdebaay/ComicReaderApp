@@ -4,10 +4,23 @@ using System.Collections.Generic;
 
 namespace ComicReaderApp.Models
 {
+    /// <summary>
+    /// Intermediate class to deserialize Comic Folder list into list of ComicListItems and Folder properties
+    /// </summary>
     public class FolderModel
     {
-        List<ComicListItemModel> files = new List<ComicListItemModel>();
+        #region private fields
+        /// <summary>
+        /// Readonly backing field for ComicListItemModels.
+        /// </summary>
+        readonly List<ComicListItemModel> files = new List<ComicListItemModel>();
+        #endregion
 
+        #region instance
+
+        /// <summary>
+        /// Default constructor, creates a list of one default ComicListItem and stores this in files field.
+        /// </summary>
         public FolderModel()
         {
             Name = "Folder not defined.";
@@ -17,7 +30,11 @@ namespace ComicReaderApp.Models
             ComicListItemModel emtpyComic = new ComicListItemModel("", "File not found", 0);
             files.Add(emtpyComic);
         }
-
+        
+        /// <summary>
+        /// Constructor used to parse API result into e Folder object with folder details and a list of ComicListItems
+        /// </summary>
+        /// <param name="folder">JObject containing folder and array of ComicListItems to be parsed into files field</param>
         public FolderModel(JObject folder)
         {
             Name = (string)folder["folder"]["@name"];
@@ -49,13 +66,36 @@ namespace ComicReaderApp.Models
             }
 
         }
+        #endregion
 
+        #region public accessors
+
+        /// <summary>
+        /// Public accessor for folder Name. Denotes Name property of the folder object.
+        /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Public accessor for AvailableFiles. Denotes the total amount of files available from the API
+        /// </summary>
         public int AvailableFiles { get; private set; }
+
+        /// <summary>
+        /// Public accessor for TotalPages. Denotes the amount of pages the AvailableFiles are divided in using the pageLimit parameter in the API call.
+        /// </summary>
         public int TotalPages { get; private set; }
+
+        /// <summary>
+        /// Public accessor for CurrentPage. Denotes the page retrieved from the API, determined by the page parameter in the API call.
+        /// </summary>
         public int CurrentPage { get; private set; }
+
+        /// <summary>
+        /// Public accessor for File list. Denotes the currently retrieved ComicFiles from the API.
+        /// </summary>
         public List<ComicListItemModel> Files { get {
                 return files;
             } private set { } }
+        #endregion
     }
 }

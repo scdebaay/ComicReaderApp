@@ -7,19 +7,44 @@ using System.Threading.Tasks;
 
 namespace ComicReaderApp.Models
 {
+    /// <summary>
+    /// Custom collection class representing a list of comics that has beenmarked favorite by a user.
+    /// </summary>
+    /// <typeparam name="ComicListItemModel">The list should only contain ComicListItem objects</typeparam>
     public class ComicFavoriteModel<ComicListItemModel> : IList<Models.ComicListItemModel>
     {
+        #region private instance
+        /// <summary>
+        /// Private backing list for Comic Favorite List. Initiates to new List of ComicListItems
+        /// </summary>
+        private ComicFavoriteModel<Models.ComicListItemModel> Items { get; set; } = new ComicFavoriteModel<Models.ComicListItemModel>();
+        #endregion
+
+        #region public accessors
+        /// <summary>
+        /// public accessor to specific Comic in the list Items by index.
+        /// Gets and sets items at index.
+        /// </summary>
+        /// <param name="index">int, index to locate comic at</param>
+        /// <returns></returns>
         public Models.ComicListItemModel this[int index] 
         { 
             get { return Items[index]; } 
             set { Items[index] = value; } 
         }
 
-        public ComicFavoriteModel<Models.ComicListItemModel> Items { get; set; } = new ComicFavoriteModel<Models.ComicListItemModel>();
-
+        /// <summary>
+        /// Count of items in this list object.
+        /// </summary>
         public int Count { get { return Items.Count; } }
-        public bool IsReadOnly { get { return false; } }
 
+        /// <summary>
+        /// Readonly status of this object, defaults to false
+        /// </summary>
+        public bool IsReadOnly { get { return false; } }
+        #endregion
+
+        #region IList implementation
         public void Add(Models.ComicListItemModel item)
         {
             Items.Add(item);
@@ -28,37 +53,7 @@ namespace ComicReaderApp.Models
         public void Clear()
         {
             Items.Clear();
-        }
-
-        public string JSONResult
-        {
-            get { return JsonConvert.SerializeObject(this); }
-        }
-
-        public void LoadFavorites()
-        {
-            JArray favoriteArray = JsonConvert.DeserializeObject<JArray>(UserSettings.History);
-            if (favoriteArray.HasValues)
-            {
-                foreach (var favcomic in favoriteArray.Children())
-                {
-                    Models.ComicListItemModel comic = new Models.ComicListItemModel((string)favcomic["Path"], ((string)favcomic["Title"]), favcomic["TotalPages"].ToObject<int>());
-                    Items.Add(comic);
-                }
-            }
-
-
-        }
-
-        public bool Contains(Models.ComicListItemModel item)
-        {
-            if (Items.Contains(item))
-            { return true; }
-            else
-            {
-                return false;
-            }
-        }
+        }                
 
         public void CopyTo(Models.ComicListItemModel[] array, int arrayIndex)
         {
@@ -94,7 +89,58 @@ namespace ComicReaderApp.Models
         {
             return Items.GetEnumerator();
         }
+        #endregion
 
+        #region Custom accessors
+        /// <summary>
+        /// Public accessor to JSON representation of this object.
+        /// </summary>
+        public string JSONResult
+        {
+            get { return JsonConvert.SerializeObject(this); }
+        }
+        #endregion
+
+        #region Public functions
+        /// <summary>
+        /// Public function to load JSON string representing the Users favorites into this object
+        /// </summary>
+        public void LoadFavorites()
+        {
+            JArray favoriteArray = JsonConvert.DeserializeObject<JArray>(UserSettings.Favorites);
+            if (favoriteArray.HasValues)
+            {
+                foreach (var favcomic in favoriteArray.Children())
+                {
+                    Models.ComicListItemModel comic = new Models.ComicListItemModel((string)favcomic["Path"], ((string)favcomic["Title"]), favcomic["TotalPages"].ToObject<int>());
+                    Items.Add(comic);
+                }
+            }
+
+
+        }
+
+        /// <summary>
+        /// Public function to check whether this object contains ComicListItem represented by item
+        /// </summary>
+        /// <param name="item">ComicListItem to check the list for.</param>
+        /// <returns></returns>
+        public bool Contains(Models.ComicListItemModel item)
+        {
+            if (Items.Contains(item))
+            { return true; }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Public function to asynchronously retrieve the items in the Favorites list for the current user.
+        /// </summary>
+        /// <param name="index">Index item to start retrieval from</param>
+        /// <param name="count">Amount of items to retrieve.</param>
+        /// <returns></returns>
         public async Task<List<Models.ComicListItemModel>> GetRange(int index, int count)
         {
             List<Models.ComicListItemModel> result = new List<Models.ComicListItemModel>();
@@ -108,5 +154,6 @@ namespace ComicReaderApp.Models
             }
             return result;
         }
+        #endregion
     }
 }

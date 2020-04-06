@@ -11,11 +11,12 @@ namespace ComicReaderApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HistoryListViewPage : ContentPage
     {
-        ToastLength toastLength = ToastLength.Short;
+        readonly ToastLength toastLength = ToastLength.Short;
+        //Instantiate History Listview page, bind to ComicHistoryViewModel
         public HistoryListViewPage()
         {            
             InitializeComponent();            
-            BindingContext = new ComicHistoryViewModel(Navigation);            
+            BindingContext = new ComicHistoryViewModel();            
         }
 
         private ComicHistoryViewModel HistoryListViewModel
@@ -23,15 +24,18 @@ namespace ComicReaderApp
             get { return GetValue(BindingContextProperty) as ComicHistoryViewModel; }
             set { SetValue(BindingContextProperty, value); }
         }
-
+        
+        //Private bool to detect whether the page should be refreshed OnAppearing. Defaults to false.
         private bool RefreshInitialPage = false;
 
+        //Click handler when Settings button is clicked. Switch to settingspage. When returning to this page, the List should be refreshed.
         async void Settings_ClickedAsync(object sender, EventArgs e)
         {
             RefreshInitialPage = true;
             await Navigation.PushAsync(new SettingsContentPage());            
         }
 
+        //Click handler when Delete button is clicked. History list is cleared and saved, toast is shown to confirm.
         void Delete_Clicked(object sender, EventArgs e)
         {
             HistoryListViewModel.Items.Clear();
@@ -39,6 +43,7 @@ namespace ComicReaderApp
             CrossToastPopUp.Current.ShowToastWarning("History cleared", toastLength);
         }
 
+        //OnAppearing override, checks whether RefreshInitialPage is set, of so, the item list is cleared and reloaded.
         protected override void OnAppearing()
         {
             base.OnAppearing();

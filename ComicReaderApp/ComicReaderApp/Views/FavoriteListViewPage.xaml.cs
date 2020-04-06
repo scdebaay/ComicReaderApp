@@ -13,10 +13,11 @@ namespace ComicReaderApp
     public partial class FavoriteListViewPage : ContentPage
     {
         ToastLength toastLength = ToastLength.Short;
+        //Instantiate Favorite Listview page, bind to ComicFavoriteViewModel
         public FavoriteListViewPage()
         {
             InitializeComponent();
-            BindingContext = new ComicFavoriteViewModel(Navigation);
+            BindingContext = new ComicFavoriteViewModel();
         }
 
         private ComicFavoriteViewModel FavoriteListViewModel
@@ -25,14 +26,17 @@ namespace ComicReaderApp
             set { SetValue(BindingContextProperty, value); }
         }
 
+        //Private bool to detect whether the page should be refreshed OnAppearing. Defaults to false.
         private bool RefreshInitialPage = false;
 
+        //Click handler when Settings button is clicked. Switch to settingspage. When returning to this page, the List should be refreshed.
         async void Settings_ClickedAsync(object sender, EventArgs e)
         {
             RefreshInitialPage = true;
             await Navigation.PushAsync(new SettingsContentPage());
         }
 
+        //Click handler when Delete button is clicked. Favorites list is cleared and saved, toast is shown to confirm.
         void Delete_Clicked(object sender, EventArgs e)
         {
             FavoriteListViewModel.Items.Clear();
@@ -42,6 +46,7 @@ namespace ComicReaderApp
             CrossToastPopUp.Current.ShowToastWarning("Favorites cleared", toastLength);
         }
 
+        //OnAppearing override, checks whether RefreshInitialPage is set, of so, the item list is cleared and reloaded.
         protected override void OnAppearing()
         {
             base.OnAppearing();
