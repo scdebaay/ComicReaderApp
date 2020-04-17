@@ -3,15 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
-    <AssemblyVersion>2020.4.0.2</AssemblyVersion>
-    <FileVersion>2020.4.0.2</FileVersion>
+    <AssemblyVersion>2020.4.1.3</AssemblyVersion>
+    <FileVersion>2020.4.1.3</FileVersion>
     <Description>App to read Comic in cbr/cbz format online from Comic Cloud service.</Description>
-    <Copyright>Solino de Baay (2016)</Copyright>
+    <Copyright>Copyright Solino de Baay © (2016)</Copyright>
     <PackageProjectUrl>https://github.com/scdebaay/ComicReaderApp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/scdebaay/ComicReaderApp</RepositoryUrl>
     <RepositoryType>Xamarin App</RepositoryType>
     <PackageTags>Xamarin, Comic, API, online</PackageTags>
-    <Version>2020.04.0.2</Version>
+    <Version>2020.04.1.3</Version>
+    <PackageReleaseNotes>App version 1, release 2020.4.1.3, All functionality implemented, changed app to use Comic Cloud API 2.0, which has SQL backend. Comic loading should be much faster. Also Favorites load fast.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

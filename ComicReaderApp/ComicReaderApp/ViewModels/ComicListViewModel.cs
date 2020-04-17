@@ -76,7 +76,7 @@ namespace ComicReaderApp.ViewModels
                 OnLoadMore = async () =>
                 {
                     IsLoadingMore = true;
-                    var page = (Items.Count / UserSettings.PageLimit) + 1;
+                    var page = (Items.Count / UserSettings.PageLimit);
                     var apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
                     TotalComics = apiCallResult.AvailableFiles;
                     InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
@@ -156,7 +156,7 @@ namespace ComicReaderApp.ViewModels
                     {
                         Photo photopage = new Photo
                         {
-                            URL = $"{UserSettings.ApiLocation}?file={comic.Path}&page={page}&size={UserSettings.ComicSize}",
+                            URL = $"{UserSettings.ApiLocation}comic{comic.Path}/{page}?size={UserSettings.ComicSize}",
                             Title = $"{comic.Title}-Page {page}"
                         };
                         ComicPages.Add(photopage);

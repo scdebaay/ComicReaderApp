@@ -37,13 +37,13 @@ namespace ComicReaderApp.Models
         /// <param name="folder">JObject containing folder and array of ComicListItems to be parsed into files field</param>
         public FolderModel(JObject folder)
         {
-            Name = (string)folder["folder"]["@name"];
+            Name = (string)folder["folder"]["name"];
 
-            AvailableFiles = string.IsNullOrEmpty((string)folder["folder"]["@files"]) ? 1 : int.TryParse((string)folder["folder"]["@files"],out int testAFiles) ? AvailableFiles = testAFiles : AvailableFiles = 1;
+            AvailableFiles = string.IsNullOrEmpty((string)folder["folder"]["files"]) ? 1 : int.TryParse((string)folder["folder"]["files"],out int testAFiles) ? AvailableFiles = testAFiles : AvailableFiles = 1;
 
-            TotalPages = string.IsNullOrEmpty((string)folder["folder"]["@totalPages"]) ? 1 : int.TryParse((string)folder["folder"]["@totalPages"], out int testTPages) ? TotalPages = testTPages : TotalPages = 1;
+            TotalPages = string.IsNullOrEmpty((string)folder["folder"]["totalPages"]) ? 1 : int.TryParse((string)folder["folder"]["totalPages"], out int testTPages) ? TotalPages = testTPages : TotalPages = 1;
 
-            CurrentPage = string.IsNullOrEmpty((string)folder["folder"]["@currentPage"]) ? 1 : int.TryParse((string)folder["folder"]["@currentPage"], out int testCPage) ? CurrentPage = testCPage : CurrentPage = 1;
+            CurrentPage = string.IsNullOrEmpty((string)folder["folder"]["currentPage"]) ? 1 : int.TryParse((string)folder["folder"]["currentPage"], out int testCPage) ? CurrentPage = testCPage : CurrentPage = 1;
 
             JArray fileArray = (JArray)folder["folder"]["file"];
 
@@ -51,7 +51,7 @@ namespace ComicReaderApp.Models
             {
                 foreach (var comicFile in fileArray.Children())
                 {
-                    ComicListItemModel comic = new ComicListItemModel((string)comicFile["@path"], ((string)comicFile["@name"]).Substring(0, ((string)comicFile["@name"]).Length - 4), comicFile["@totalpages"].ToObject<int>());
+                    ComicListItemModel comic = new ComicListItemModel((string)comicFile["path"], ((string)comicFile["name"]).Substring(0, ((string)comicFile["name"]).Length - 4), comicFile["totalpages"].ToObject<int>());
                     if (ComicFavoriteStore.Contains(comic.Title))
                     {
                         comic.Favorite = true;

@@ -21,7 +21,7 @@ namespace ComicReaderApp.Models
         {
             Path = "";
             Title = "Comic not found";
-            ThumbUrl = $"{UserSettings.ApiLocation}?file=NotFound&page=0&size=100";
+            ThumbUrl = $"{UserSettings.ApiLocation}image/NotFound.png?size=100";
         }
         
         /// <summary>
@@ -34,7 +34,7 @@ namespace ComicReaderApp.Models
         {
             Path = path;
             Title = name;
-            ThumbUrl = $"{UserSettings.ApiLocation}?file={Path}&page=0&size=100";
+            ThumbUrl = $"{UserSettings.ApiLocation}comic{Path}/0?size=100";
             TotalPages = totalpages;            
             if (ComicFavoriteStore.Contains(Title))
             {

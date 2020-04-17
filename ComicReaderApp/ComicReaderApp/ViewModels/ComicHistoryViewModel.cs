@@ -148,7 +148,7 @@ namespace ComicReaderApp.ViewModels
                     {
                         Photo photopage = new Photo
                         {
-                            URL = $"{UserSettings.ApiLocation}?file={comic.Path}&page={page}&size={UserSettings.ComicSize}",
+                            URL = $"{UserSettings.ApiLocation}comic{comic.Path}/{page}?size={UserSettings.ComicSize}",
                             Title = $"{comic.Title}-Page {page}"
                         };
                         ComicPages.Add(photopage);
