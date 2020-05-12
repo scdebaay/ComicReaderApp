@@ -44,5 +44,24 @@ namespace ComicReaderApp.Data
                 return emptyResponseList;
             }
         }
+
+        /// <summary>
+        /// Async call to retrieve api version data. 
+        /// Call is made to API location from Settings VM.
+        /// </summary>
+        /// <returns>Api Version Model object containing version data.</returns>
+        public async Task<ApiVersionModel> GetApiVersionAsync()
+        {
+            HttpClient client = new HttpClient
+            {
+                BaseAddress = new Uri(UserSettings.ApiLocation)
+            };
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var request = $"{client.BaseAddress}Version";
+            HttpResponseMessage response = await client.GetAsync(request);
+            response.EnsureSuccessStatusCode();
+            ApiVersionModel versionResult = JsonConvert.DeserializeObject<ApiVersionModel>(response.Content.ReadAsStringAsync().Result);
+            return versionResult;
+        }
     }
 }

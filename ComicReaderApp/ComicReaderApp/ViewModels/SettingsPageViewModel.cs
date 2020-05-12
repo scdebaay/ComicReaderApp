@@ -6,9 +6,12 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Plugin.Toast;
 using Plugin.Toast.Abstractions;
+using ComicReaderApp.Models;
+using System.Threading.Tasks;
+using System;
 
 namespace ComicReaderApp.ViewModels
-{   
+{
     /// <summary>
     /// Settings viewmodel class
     /// </summary>
@@ -19,6 +22,10 @@ namespace ComicReaderApp.ViewModels
         /// Toastlength definition from Toast plugin.
         /// </summary>
         readonly ToastLength toastLength = ToastLength.Short;
+        /// <summary>
+        /// Instantiate API call service object. This handles API calls to load list of available Comic List Items.
+        /// </summary>
+        readonly ComicApiCallService _comicApiCallService = new ComicApiCallService();
         #endregion
 
         #region Constructor
@@ -31,6 +38,7 @@ namespace ComicReaderApp.ViewModels
             PageLimit = UserSettings.PageLimit;
             ComicSize = UserSettings.ComicSize;
             AppVersion = $"{typeof(SettingsPageViewModel).Assembly.GetName()} version {typeof(SettingsPageViewModel).Assembly.GetName().Version}";
+            GetApiVersion();
         }
         #endregion
 
@@ -54,6 +62,23 @@ namespace ComicReaderApp.ViewModels
         /// Public accessor for AppVersion from the Settings View Page.
         /// </summary>
         public string AppVersion { get; set; }
+
+        /// <summary>
+        /// Public accessor for ApiVersion from the Settings View Page.
+        /// </summary>
+        public ApiVersionModel ApiVersionModel 
+        { 
+            get { return _apiVersionModel; } 
+            set { _apiVersionModel = value; OnPropertyChanged(nameof(ApiVersionModel)); } 
+        }
+
+        #region Private parts
+        private ApiVersionModel _apiVersionModel = new ApiVersionModel();
+        private async void GetApiVersion()
+        {
+            ApiVersionModel = await _comicApiCallService.GetApiVersionAsync();
+        }
+        #endregion
         #endregion
 
         #region Commands

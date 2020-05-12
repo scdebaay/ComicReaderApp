@@ -22,6 +22,15 @@
                 HorizontalOptions="CenterAndExpand" FontSize="Large" TextColor="{StaticResource TitleFontColour}"/>
                 <Label Text="App Version:" TextColor="{StaticResource ItemTitleFontColour}"/>
                 <Label Text="{Binding AppVersion}" FontSize="Small" TextColor="{StaticResource ItemTitleFontColour}"/>
+                
+                <Label Text="Api Name:" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="{Binding ApiVersionModel.apiName}" FontSize="Small" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="Api Version:" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="{Binding ApiVersionModel.apiVersion}" FontSize="Small" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="Library Name:" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="{Binding ApiVersionModel.libraryName}" FontSize="Small" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="Library Version:" TextColor="{StaticResource ItemTitleFontColour}"/>
+                <Label Text="{Binding ApiVersionModel.libraryVersion}" FontSize="Small" TextColor="{StaticResource ItemTitleFontColour}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
