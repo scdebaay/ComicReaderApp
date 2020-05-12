@@ -90,7 +90,7 @@ namespace ComicReaderApp.ViewModels
                 OnLoadMore = async () =>
                 {
                     IsLoadingMore = true;
-                    var page = (PageIterator / UserSettings.PageLimit) + 1;
+                    var page = (PageIterator / UserSettings.PageLimit);
                     var apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
                     TotalComics = ComicFavoriteStore.Count;
                     InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
@@ -130,7 +130,7 @@ namespace ComicReaderApp.ViewModels
         }
         #endregion
 
-        #region Start comic reading from history
+        #region Start comic reading from favorites
         /// <summary>
         /// Public Command to handle Favorite List item tapped (TappedItemArgs)
         /// Checks ComicBookmarkStore to see whether a page in the tapped comic was bookmarked. If true, starts browsing at that page.        
@@ -150,6 +150,23 @@ namespace ComicReaderApp.ViewModels
                         bookMark = ComicBookmarkStore.Get(comic.Title);
                     }
                     #endregion
+                    #region History
+                    ComicHistoryModel<ComicListItemModel> history = new ComicHistoryModel<ComicListItemModel>();
+                    if (UserSettings.History == "[]")
+                    {
+                        history.Add(comic);
+                    }
+                    else
+                    {
+                        history.LoadHistory();
+                        if (!history.Contains(comic))
+                        {
+                            history.Add(comic);
+                        }
+                    }
+                    UserSettings.History = history.JSONResult;
+                    #endregion
+                    #region ComicBrowser
                     List<Photo> ComicPages = new List<Photo>();
                     for (int page = 0; page <= comic.TotalPages; page++)
                     {
@@ -178,6 +195,7 @@ namespace ComicReaderApp.ViewModels
                         Android_ContainerPaddingPx = 20,
                         iOS_ZoomPhotosToFill = false
                     }.Show();
+                    #endregion
                 });
             }
         }
