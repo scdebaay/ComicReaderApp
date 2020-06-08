@@ -17,7 +17,6 @@ namespace ComicReaderApp
             BindingContext = new ComicListViewModel();
             
         }
-
         private ComicListViewModel ComicListViewModel
         {
             get { return GetValue(BindingContextProperty) as ComicListViewModel; }
@@ -46,6 +45,12 @@ namespace ComicReaderApp
         {
             RefreshInitialPage = false;
             await Navigation.PushAsync(new HistoryListViewPage());
+        }
+
+        async void Search_ClickedAsync(object sender, EventArgs e)
+        {
+            ComicListViewModel.Items.Clear();
+            await ComicListViewModel.Items.LoadMoreAsync();
         }
 
         //OnAppearing override, checks whether RefreshInitialPage is set, of so, the item list is cleared and reloaded.

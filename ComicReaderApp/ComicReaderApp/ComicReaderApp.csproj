@@ -3,16 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
-    <AssemblyVersion>2020.5.1.4</AssemblyVersion>
-    <FileVersion>2020.5.1.4</FileVersion>
+    <AssemblyVersion>2020.6.1.5</AssemblyVersion>
+    <FileVersion>2020.6.1.5</FileVersion>
     <Description>App to read Comic in cbr/cbz format online from Comic Cloud service.</Description>
     <Copyright>Copyright Solino de Baay © (2016)</Copyright>
     <PackageProjectUrl>https://github.com/scdebaay/ComicReaderApp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/scdebaay/ComicReaderApp</RepositoryUrl>
     <RepositoryType>Xamarin App</RepositoryType>
     <PackageTags>Xamarin, Comic, API, online</PackageTags>
-    <Version>2020.05.1.4</Version>
-    <PackageReleaseNotes>App Version 1.4, 2020.5.1.4, Implemented History for Favorites and API Version display in Settings.
+    <Version>2020.06.1.5</Version>
+    <PackageReleaseNotes>App Version 1.6, 2020.06.1.6, Implemented Search in ComicListScreen. Need API version 2020.6.1.6 and CL 2020.6.1.5.
+
+App Version 1.4, 2020.5.1.4, Implemented History for Favorites and API Version display in Settings.
 App version 1, release 2020.4.1.3, All functionality implemented, changed app to use Comic Cloud API 2.0, which has SQL backend. Comic loading should be much faster. Also Favorites load fast.</PackageReleaseNotes>
   </PropertyGroup>
 
@@ -22,6 +24,7 @@ App version 1, release 2020.4.1.3, All functionality implemented, changed app to
     <None Remove="Resources\Images\Favorite.png" />
     <None Remove="Resources\Images\FavoriteOn.png" />
     <None Remove="Resources\Images\History.png" />
+    <None Remove="Resources\Images\Search.png" />
     <None Remove="Resources\Settings.png" />
   </ItemGroup>
 
@@ -30,6 +33,7 @@ App version 1, release 2020.4.1.3, All functionality implemented, changed app to
     <EmbeddedResource Include="Resources\Images\Delete.png" />
     <EmbeddedResource Include="Resources\Images\FavoriteOn.png" />
     <EmbeddedResource Include="Resources\Images\History.png" />
+    <EmbeddedResource Include="Resources\Images\Search.png" />
     <EmbeddedResource Include="Resources\Images\Settings.png" />
   </ItemGroup>
 

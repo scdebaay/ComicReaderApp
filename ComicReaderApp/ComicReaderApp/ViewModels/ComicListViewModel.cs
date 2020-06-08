@@ -43,7 +43,8 @@ namespace ComicReaderApp.ViewModels
         /// <summary>
         /// Private int, represents the number of available Comic List items from the API
         /// </summary>
-        private int TotalComics { get; set; }
+        private int _totalComics { get; set; }
+        private string _searchText;
         #endregion
 
         #region Public fields
@@ -61,9 +62,20 @@ namespace ComicReaderApp.ViewModels
                 _isLoadingMore = value;
                 OnPropertyChanged(nameof(IsLoadingMore));
             }
+        }        
+
+        public string SearchText
+        {
+            get { return _searchText; }
+            set 
+            { 
+                _searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+            }
         }
+
         #endregion
-        
+
         #region Constructor
         /// <summary>
         /// Constructor for Comic List ViewModel. Initiates InfiniteScrollCollection of Comic List items, calls API Call service to populate list.
@@ -77,8 +89,16 @@ namespace ComicReaderApp.ViewModels
                 {
                     IsLoadingMore = true;
                     var page = (Items.Count / UserSettings.PageLimit);
-                    var apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
-                    TotalComics = apiCallResult.AvailableFiles;
+                    FolderModel apiCallResult = new FolderModel();
+                    if (string.IsNullOrEmpty(SearchText))                        
+                    {
+                        apiCallResult = await _comicApiCallService.GetFolderListAsync(page);
+                    }
+                    else 
+                    {
+                        apiCallResult = await _comicApiCallService.GetFolderListAsync(SearchText, page);
+                    }
+                    _totalComics = apiCallResult.AvailableFiles;
                     InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
                     foreach (var _comic in apiCallResult.Files)
                     {
@@ -90,7 +110,7 @@ namespace ComicReaderApp.ViewModels
                 },
                 OnCanLoadMore = () =>
                 {
-                    return Items.Count < TotalComics;
+                    return Items.Count < _totalComics;
                 }
             };
             Items.LoadMoreAsync();
