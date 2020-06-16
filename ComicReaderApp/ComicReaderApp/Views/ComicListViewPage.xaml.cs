@@ -12,10 +12,10 @@ namespace ComicReaderApp
     {
         //Instantiate Main Comic Listview page, bind to ComicListViewModel
         public ComicListViewPage()
-        {            
-            InitializeComponent();            
+        {
+            InitializeComponent();
             BindingContext = new ComicListViewModel();
-            
+
         }
         private ComicListViewModel ComicListViewModel
         {
@@ -30,13 +30,13 @@ namespace ComicReaderApp
         async void Settings_ClickedAsync(object sender, EventArgs e)
         {
             RefreshInitialPage = true;
-            await Navigation.PushAsync(new SettingsContentPage());            
+            await Navigation.PushAsync(new SettingsContentPage());
         }
 
         //Click handler when Favorites button is clicked. Switch to Favoritespage. When returning to this page, the List should not be refreshed.
         async void Favorites_ClickedAsync(object sender, EventArgs e)
         {
-            RefreshInitialPage = false;
+            RefreshInitialPage = true;
             await Navigation.PushAsync(new FavoriteListViewPage());
         }
 
@@ -57,10 +57,32 @@ namespace ComicReaderApp
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            if (RefreshInitialPage) {
+            SizeChanged += OnPageSizeChanged;
+            if (RefreshInitialPage)
+            {
                 ComicListViewModel.Items.Clear();
                 ComicListViewModel.Items.LoadMoreAsync();
                 RefreshInitialPage = false;
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            SizeChanged -= OnPageSizeChanged;
+        }
+
+
+        private void OnPageSizeChanged(object sender, EventArgs e)
+        {
+            var IsLandScape = Width > Height;
+            if (IsLandScape)
+            {
+                SearchEntry.WidthRequest = 500;
+            }
+            else
+            {
+                SearchEntry.WidthRequest = 300;
             }
         }
     }

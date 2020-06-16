@@ -11,8 +11,8 @@
     xmlns:extensions="clr-namespace:ComicReaderApp.Extensions"
     BackgroundColor="{StaticResource MainBackGroundColour}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="Delete_Clicked" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Delete.png}"/>
-        <ToolbarItem Clicked="Settings_ClickedAsync" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Settings.png}"/>
+        <ToolbarItem x:Name="DeleteBtn" Clicked="Delete_Clicked" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Delete.png}"/>
+        <ToolbarItem x:Name="SettingsBtn" Clicked="Settings_ClickedAsync" IconImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Settings.png}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -20,8 +20,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ListView
+        x:Name="historyOfComics"
         CachingStrategy="RecycleElement"
-        ItemsSource="{Binding Items}">
+        ItemsSource="{Binding Items}"
+        HasUnevenRows="True">
         <ListView.Behaviors>
             <scroll:InfiniteScrollBehavior />
             <behaviors:ListViewItemTappedBehavior Command="{Binding ItemTappedCommand}"
@@ -30,8 +32,13 @@
 
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
-                    <Grid Padding="10, 2, 0, 2" BackgroundColor="{StaticResource ItemDividerColour}">
+                <ViewCell Height="100">
+                    <ViewCell.ContextActions>
+                        <MenuItem Command="{Binding Source={x:Reference historyOfComics}, Path=BindingContext.RemoveComicCommand}"
+                      CommandParameter="{Binding .}"
+                      Text="Remove Comic" IsDestructive="True" />
+                    </ViewCell.ContextActions>
+                    <Grid Padding="10, 2, 0, 2" BackgroundColor="{StaticResource ItemDividerColour}" HeightRequest="100">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
@@ -39,7 +46,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0"/>
+                        <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0" HeightRequest="100" WidthRequest="75"/>
                         <Label Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource ItemTitleFontColour}" FontSize="Medium" Grid.Row="0" Grid.Column="1"/>
                     </Grid>
                 </ViewCell>                

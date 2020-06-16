@@ -139,7 +139,7 @@ namespace ComicReaderApp.Models
                     ComicFavoriteStore.SaveFavorites();
                 });
             }
-        }
+        }        
         #endregion
     }
 }

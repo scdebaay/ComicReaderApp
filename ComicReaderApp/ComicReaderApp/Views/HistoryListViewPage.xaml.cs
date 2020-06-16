@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Plugin.Toast;
 using Plugin.Toast.Abstractions;
+using ComicReaderApp.Models;
 
 namespace ComicReaderApp
 {
@@ -14,9 +15,9 @@ namespace ComicReaderApp
         readonly ToastLength toastLength = ToastLength.Short;
         //Instantiate History Listview page, bind to ComicHistoryViewModel
         public HistoryListViewPage()
-        {            
-            InitializeComponent();            
-            BindingContext = new ComicHistoryViewModel();            
+        {
+            InitializeComponent();
+            BindingContext = new ComicHistoryViewModel();
         }
 
         private ComicHistoryViewModel HistoryListViewModel
@@ -24,15 +25,15 @@ namespace ComicReaderApp
             get { return GetValue(BindingContextProperty) as ComicHistoryViewModel; }
             set { SetValue(BindingContextProperty, value); }
         }
-        
+
         //Private bool to detect whether the page should be refreshed OnAppearing. Defaults to false.
         private bool RefreshInitialPage = false;
 
         //Click handler when Settings button is clicked. Switch to settingspage. When returning to this page, the List should be refreshed.
         async void Settings_ClickedAsync(object sender, EventArgs e)
         {
-            RefreshInitialPage = true;
-            await Navigation.PushAsync(new SettingsContentPage());            
+            RefreshInitialPage = true;            
+            await Navigation.PushAsync(new SettingsContentPage());
         }
 
         //Click handler when Delete button is clicked. History list is cleared and saved, toast is shown to confirm.
@@ -47,11 +48,22 @@ namespace ComicReaderApp
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            if (RefreshInitialPage) {
+            if (RefreshInitialPage)
+            {
                 HistoryListViewModel.Items.Clear();
                 HistoryListViewModel.Items.LoadMoreAsync();
                 RefreshInitialPage = false;
             }
         }
+
+        //void OnDelete(object sender, EventArgs e)
+        //{            
+        //    var mi = ((MenuItem)sender);
+        //    HistoryListViewModel.RemoveComic.Execute(mi.CommandParameter);
+        //    HistoryListViewModel.Items.Clear();
+        //    HistoryListViewModel.Items.LoadMoreAsync();
+        //    //HistoryListViewModel.Items.Remove((ComicListItemModel)mi.CommandParameter);
+        //    RefreshInitialPage = false;
+        //}
     }
 }

@@ -19,11 +19,11 @@ namespace ComicReaderApp.ViewModels
         /// Toast length initialization. Toast being used to confirm bookmark set.
         /// </summary>
         readonly ToastLength toastLength = ToastLength.Short;
-        
+
         /// <summary>
         /// Instantiate ComicHistory object. This serves to load list of previously visited Comic List Items.
         /// </summary>
-        readonly ComicHistoryModel<ComicListItemModel> history = new ComicHistoryModel<ComicListItemModel>();
+        private ComicHistoryModel<ComicListItemModel> history = new ComicHistoryModel<ComicListItemModel>();
         #endregion
 
         #region Public Functions
@@ -47,7 +47,7 @@ namespace ComicReaderApp.ViewModels
         /// Private bool represents List loading status.
         /// </summary>
         private bool _isLoadingMore;
-        
+
         /// <summary>
         /// Private int, represents the number of available Comic List items from the users history
         /// </summary>
@@ -79,22 +79,21 @@ namespace ComicReaderApp.ViewModels
         /// </summary>
         public ComicHistoryViewModel()
         {
-            history.LoadHistory();
             Items = new InfiniteScrollCollection<ComicListItemModel>
             {
                 OnLoadMore = async () =>
-                {
+                {   
+                    history.LoadHistory();
                     IsLoadingMore = true;
                     var page = (Items.Count / UserSettings.PageLimit);
                     var startItem = (page * UserSettings.PageLimit);
-                    var histLoadResult = await history.GetRangeAsync(startItem, UserSettings.PageLimit);                    
+                    var histLoadResult = await history.GetRangeAsync(startItem, UserSettings.PageLimit);
                     TotalComics = history.Count;
                     InfiniteScrollCollection<ComicListItemModel> items = new InfiniteScrollCollection<ComicListItemModel>();
                     foreach (var _comic in histLoadResult)
                     {
                         items.Add(_comic);
                     }
-
                     IsLoadingMore = false;
                     return items;
                 },
@@ -175,5 +174,24 @@ namespace ComicReaderApp.ViewModels
             }
         }
         #endregion
+        public ICommand RemoveComicCommand
+        {
+            get
+            {
+                return new Command((RemovedComic) =>
+                {
+                    ComicListItemModel comic = RemovedComic as ComicListItemModel;
+                    ComicHistoryModel<ComicListItemModel> history = new ComicHistoryModel<ComicListItemModel>();
+                    history.LoadHistory();
+                    if (history.Contains(comic))
+                    {
+                        history.Remove(comic);
+                        UserSettings.History = history.JSONResult;
+                    }
+                    Items.Clear();
+                    Items.LoadMoreAsync();                    
+                });
+            }
+        }
     }
 }

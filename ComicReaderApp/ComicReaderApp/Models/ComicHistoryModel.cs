@@ -110,6 +110,7 @@ namespace ComicReaderApp.Models
             JArray historyArray = JsonConvert.DeserializeObject<JArray>(UserSettings.History);
             if (historyArray.HasValues)
             {
+                Items.Clear();
                 foreach (var histcomic in historyArray.Children())
                 {
                     Models.ComicListItemModel comic = new Models.ComicListItemModel((string)histcomic["Path"], ((string)histcomic["Title"]), histcomic["TotalPages"].ToObject<int>());
