@@ -46,6 +46,28 @@ namespace ComicReaderApp.ViewModels
         private int _totalComics { get; set; }
         private string _searchText;
         #endregion
+        ///<summary>
+        ///Searching implemented using private search method and public Command for binding.
+        ///Searched term is in SearchText property
+        ///</summary>
+        #region private methods
+        private void ExecuteSearch()
+        {
+            Items.Clear();
+            Items.LoadMoreAsync();
+        }
+        #endregion
+
+        #region public commands
+        public ICommand SearchCommand
+        {
+            get 
+            {
+                return new Command(
+                    () => ExecuteSearch());
+            }
+        }
+        #endregion
 
         #region Public fields
         /// <summary>

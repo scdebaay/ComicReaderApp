@@ -2,6 +2,7 @@
 using ComicReaderApp.Views;
 using System;
 using System.Diagnostics;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -47,12 +48,6 @@ namespace ComicReaderApp
             await Navigation.PushAsync(new HistoryListViewPage());
         }
 
-        async void Search_ClickedAsync(object sender, EventArgs e)
-        {
-            ComicListViewModel.Items.Clear();
-            await ComicListViewModel.Items.LoadMoreAsync();
-        }
-
         //OnAppearing override, checks whether RefreshInitialPage is set, of so, the item list is cleared and reloaded.
         protected override void OnAppearing()
         {
@@ -71,14 +66,13 @@ namespace ComicReaderApp
             base.OnDisappearing();
             SizeChanged -= OnPageSizeChanged;
         }
-
-
+        //Set the Search Entry width dynamically on rotating the device.
         private void OnPageSizeChanged(object sender, EventArgs e)
         {
             var IsLandScape = Width > Height;
             if (IsLandScape)
             {
-                SearchEntry.WidthRequest = 500;
+                SearchEntry.WidthRequest = 630;
             }
             else
             {

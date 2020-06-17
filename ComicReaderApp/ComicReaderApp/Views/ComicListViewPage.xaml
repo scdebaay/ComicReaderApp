@@ -26,8 +26,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackLayout Grid.Row="0" Orientation="Horizontal" Padding="3, 4, 2, 3">
-            <Entry x:Name="SearchEntry" HeightRequest="50" Text="{Binding SearchText}" HorizontalOptions="StartAndExpand" WidthRequest="300"/>
-            <Button Clicked="Search_ClickedAsync" Text="" ImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Search.png}" BackgroundColor="{StaticResource HeaderBackGroundColour}" TextColor="{StaticResource ItemTitleFontColour}" HorizontalOptions="End" WidthRequest="50" HeightRequest="50"/>
+            <Entry x:Name="SearchEntry" HeightRequest="50" Text="{Binding SearchText}" 
+                   HorizontalOptions="StartAndExpand" WidthRequest="300"
+                   ReturnType="Search"
+                   ReturnCommand="{Binding SearchCommand}"/>
+            <Button Command="{Binding SearchCommand}" Text="" 
+                    ImageSource="{extensions:ImageResource ComicReaderApp.Resources.Images.Search.png}" 
+                    BackgroundColor="{StaticResource HeaderBackGroundColour}" 
+                    TextColor="{StaticResource ItemTitleFontColour}" 
+                    HorizontalOptions="End" WidthRequest="50" HeightRequest="50"/>
         </StackLayout>
         <ListView Grid.Row="1"
         CachingStrategy="RecycleElement"
@@ -49,11 +56,15 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="15*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
                             <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0" HeightRequest="100" WidthRequest="75"/>
                             <Label Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource ItemTitleFontColour}" FontSize="Medium" Grid.Row="0" Grid.Column="1"/>
-                            <ImageButton Grid.Row="0" Grid.Column="3" Command="{Binding OnSwitchFavorite}" CommandParameter="{Binding SelectedItem}" BackgroundColor="{StaticResource ItemDividerColour}">
+                            <ImageButton Grid.Row="0" Grid.Column="2" 
+                                         Command="{Binding OnSwitchFavorite}" 
+                                         CommandParameter="{Binding SelectedItem}" 
+                                         BackgroundColor="{StaticResource ItemDividerColour}"
+                                         WidthRequest="30">
                                 <ImageButton.Triggers>
                                     <DataTrigger TargetType="ImageButton"
                                                          Binding="{Binding Favorite}"

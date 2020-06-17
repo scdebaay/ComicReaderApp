@@ -40,11 +40,15 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="15*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
                         <Image Source="{Binding ThumbUrl}" Grid.Row="0" Grid.Column="0" HeightRequest="100" WidthRequest="75"/>
                         <Label Text="{Binding Title}" VerticalTextAlignment="Center" TextColor="{StaticResource ItemTitleFontColour}" FontSize="Medium" Grid.Row="0" Grid.Column="1"/>
-                        <ImageButton Grid.Row="0" Grid.Column="3" Command="{Binding OnSwitchFavorite}" CommandParameter="{Binding SelectedItem}" BackgroundColor="{StaticResource ItemDividerColour}">
+                        <ImageButton Grid.Row="0" Grid.Column="2" 
+                                     Command="{Binding OnSwitchFavorite}" 
+                                     CommandParameter="{Binding SelectedItem}" 
+                                     BackgroundColor="{StaticResource ItemDividerColour}"
+                                     WidthRequest="30">
                             <ImageButton.Triggers>
                                 <DataTrigger TargetType="ImageButton"
                                                          Binding="{Binding Favorite}"
