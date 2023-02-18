@@ -1,18 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
-    <AssemblyVersion>2020.6.1.7</AssemblyVersion>
-    <FileVersion>2020.6.1.7</FileVersion>
+    <AssemblyVersion>2023.2.1.0</AssemblyVersion>
+    <FileVersion>2023.2.1.0</FileVersion>
     <Description>App to read Comic in cbr/cbz format online from Comic Cloud service.</Description>
     <Copyright>Copyright Solino de Baay © (2016)</Copyright>
     <PackageProjectUrl>https://github.com/scdebaay/ComicReaderApp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/scdebaay/ComicReaderApp</RepositoryUrl>
     <RepositoryType>Xamarin App</RepositoryType>
     <PackageTags>Xamarin, Comic, API, online</PackageTags>
-    <Version>2020.06.1.7</Version>
-    <PackageReleaseNotes>App Version 1.7, 2020.06.1.7, Implemented better XAML responsiveness when rotating screen. Also implemented Remove from Favorites and Remove from History. Remove from History by TapAndHold context action.
+    <Version>2023.02.1.0</Version>
+    <PackageReleaseNotes>App Version 1, 2023.02.1.0, Miration to latest Xamarin Forms and .Net Standard versions.
+App Version 1.7, 2020.06.1.7, Implemented better XAML responsiveness when rotating screen. Also implemented Remove from Favorites and Remove from History. Remove from History by TapAndHold context action.
 
 App Version 1.6, 2020.06.1.6, Implemented Search in ComicListScreen. Need API version 2020.6.1.6 and CL 2020.6.1.5.
 
@@ -42,11 +43,11 @@ App version 1, release 2020.4.1.3, All functionality implemented, changed app to
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.Build" Version="1.0.21" />
     <PackageReference Include="NewPhotoBrowser.Forms" Version="0.1.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Plugin.Toast" Version="2.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Plugin.Toast" Version="2.2.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="4.1.0-beta" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.529-pre3" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.5" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2545" />
     <PackageReference Include="Xamarin.Forms.Extended.InfiniteScrolling" Version="1.0.0-preview2" />
   </ItemGroup>
 
